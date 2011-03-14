@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="#0000">
+
+
+
+<RelativeLayout android:id="@+id/RelativeLayout01" android:layout_above="@+id/ImageView01" android:layout_height="match_parent" android:layout_width="match_parent" android:background="#FFFF">
+<ScrollView android:id="@+id/ScrollView01" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_margin="30dip" android:layout_width="135dip" android:layout_height="match_parent" android:background="#1000" android:scrollbars="none"><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical" android:layout_gravity="top|center_horizontal">
+<TextView android:id="@+id/user00" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#ff00"></TextView>
+<TextView android:id="@+id/user01" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#ff00"></TextView>
+<TextView android:id="@+id/user02" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+<TextView android:id="@+id/user03" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+<TextView android:id="@+id/user04" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+<TextView android:id="@+id/user05" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+<TextView android:id="@+id/user06" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+<TextView android:id="@+id/user07" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+<TextView android:id="@+id/user08" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+<TextView android:id="@+id/user09" android:text="" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24dip" android:textColor="#f000"></TextView>
+</LinearLayout>
+
+</ScrollView>
+<ScrollView android:id="@+id/ScrollView02" android:layout_toRightOf="@+id/ScrollView01" android:layout_above="@+id/ImageButton01" android:layout_height="match_parent" android:layout_width="match_parent" android:background="#1000" android:layout_margin="30dip"><LinearLayout android:layout_above="@+id/ImageButton01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LinearLayout02"></LinearLayout></ScrollView><ImageButton android:layout_height="wrap_content" android:layout_below="@+id/ImageView01" android:id="@+id/ImageButton01" android:layout_width="wrap_content" android:layout_alignParentRight="true" android:clickable="true" android:longClickable="true" android:layout_alignParentBottom="true" android:layout_margin="10dip" android:background="#0000" android:src="@drawable/selector"></ImageButton>
+
+
+
+
+
+
+</RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>
