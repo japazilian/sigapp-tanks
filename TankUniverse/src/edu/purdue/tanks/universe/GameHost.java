@@ -40,6 +40,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		private static ArrayList<GameObject> gameObjects; //copy of the the GameObjects
 		private GameEngine gameEngine;
 		boolean running  = true;
+		private Thread[] sendUpdatesThread;
 		
 		/* display attributes */
 		Display display; 
@@ -261,6 +262,10 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		if (mode == Mode.Game) {
 			if (gameEngine != null)
 				gameEngine.interrupt();
+			if (sendUpdatesThread != null) {
+				for(int i=0; i<sendUpdatesThread.length; i++)
+					sendUpdatesThread[i].interrupt();
+			}
 		}
 		clients.clear();
 		this.finish();
@@ -287,8 +292,6 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 			c.mBTConnectedThread.write(LobbyConstants.gameStart.getBytes());
 		}
 		mBTAcceptThread.interrupt();
-		//mBTAcceptThread.cancel(); causing major problems, but we do need to close 
-		// it sometime, figure out how TODO
 		initializeGame();
 	}
 
@@ -368,6 +371,8 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
     	gameEngine = new GameEngine(gameObjects);
     	gameEngine.start();
 		
+    	sendUpdatesThread = new Thread[clients.size()-1];
+    	int index = 0;
     	for(final BTClient c : clients) {
     		if(c.mBTConnectedThread == null)
     			continue;
@@ -389,6 +394,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
     		    	}					
     			}
     		});
+    		sendUpdatesThread[index++] = updateClientThread;
     		updateClientThread.start();	
     	}
 	}
