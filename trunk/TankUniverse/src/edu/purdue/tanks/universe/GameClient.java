@@ -45,6 +45,7 @@ public class GameClient extends Activity implements OnTouchListener {
 	private static ArrayList<GameObject> gameObjects; //copy of the the GameObjects
 	private GameEngine gameEngine;
 	boolean running  = true;
+	private Thread sendUpdatesThread;
 	
 	/* display attributes */
 	Display display; 
@@ -268,6 +269,8 @@ public class GameClient extends Activity implements OnTouchListener {
 		if (mode == Mode.Game) {
 			if (gameEngine != null)
 				gameEngine.interrupt();
+			if (sendUpdatesThread != null)
+				sendUpdatesThread.interrupt();
 		}
 		this.finish();
 		super.onPause();
@@ -359,7 +362,7 @@ public class GameClient extends Activity implements OnTouchListener {
     	gameEngine = new GameEngine(gameObjects);
     	gameEngine.start();
     	
-    	Thread sendPostoHostThread = new Thread(new Runnable(){
+    	sendUpdatesThread = new Thread(new Runnable(){
 			public void run() {
 				while(true) {
 		    		try {
@@ -372,7 +375,7 @@ public class GameClient extends Activity implements OnTouchListener {
 		    	}					
 			}
 		});
-		sendPostoHostThread.start();	
+		sendUpdatesThread.start();	
 	}
 
 	public boolean onTouch(View v, MotionEvent ev) {
