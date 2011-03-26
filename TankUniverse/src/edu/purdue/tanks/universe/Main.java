@@ -22,6 +22,8 @@ public class Main extends Activity implements OnClickListener, ColorPickerDialog
         Button colorButton = (Button)findViewById(R.id.btn_pickColor);
         colorButton.setOnClickListener(this);
         
+        Button b = (Button)findViewById(R.id.btn_host);
+        
         Button hostButton = (Button)findViewById(R.id.btn_host);
         hostButton.setOnClickListener(this);
         
