@@ -12,6 +12,7 @@ public class Main extends Activity implements OnClickListener, ColorPickerDialog
     private EditText username;
     private int color;
 	// Hello World
+    //Main Cooment
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
