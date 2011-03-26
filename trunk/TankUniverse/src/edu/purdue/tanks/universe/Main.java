@@ -11,7 +11,7 @@ import android.widget.EditText;
 public class Main extends Activity implements OnClickListener, ColorPickerDialog.OnColorChangedListener{
     private EditText username;
     private int color;
-	
+	// Hello World
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
