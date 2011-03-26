@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+//The sdfdsf 
 public class AnalogStick extends GameObject {
 	private FloatBuffer vertexBuffer;
 	private float[] vertices = {  // Vertices for the square
