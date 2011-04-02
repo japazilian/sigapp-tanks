@@ -5,16 +5,14 @@ import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import edu.purdue.tanks.universe.R;
-import edu.purdue.tanks.universe.R.drawable;
-import edu.purdue.tanks.universe.controls.AnalogStick;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.GLUtils;
+import edu.purdue.tanks.universe.R;
+import edu.purdue.tanks.universe.controls.AnalogStick;
 
 public class GameRenderer implements GLSurfaceView.Renderer {
 	Context context;
@@ -42,7 +40,6 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	int imageResources[] = new int[totalObjects];
 	
 	Tile map;
-	Tile3D et;
 	int width = 1;
 	int height = 1;
 	float aspect = 1;
@@ -56,8 +53,6 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 		this.aStick = aStick;
 		
 		map = new Tile(context, R.drawable.map, 96.0f, 96.0f);
-		et = new Tile3D(context, R.drawable.stick, 1.0f, 1.0f);
-		eT = new PlayerTank();
 	}
 	
 	
@@ -104,7 +99,6 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    
 	    loadTextures(gl);             // Load images into textures (NEW)
 	    map.loadTexture(gl); 
-	    et.loadTexture(gl);
 	    
 	    //gl.glEnable(GL10.GL_BLEND);
 	    //gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -150,7 +144,6 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    gl.glPushMatrix();
 	    gl.glTranslatef(1,0.5f,0);
 	    gl.glTranslatef(player.inmotion*0.15f*(float)(Math.cos((player.rotation + 90.0f) * Math.PI/180.0)), player.inmotion*0.15f*(float)(Math.sin((player.rotation + 90.0f) * Math.PI/180.0)), -13.0f);
-	    et.draw(gl);
 	    //ef.draw(gl,imageResources,0,0);
 	    gl.glPopMatrix();
 	    
