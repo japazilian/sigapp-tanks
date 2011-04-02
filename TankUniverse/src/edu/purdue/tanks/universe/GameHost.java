@@ -11,6 +11,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -78,6 +79,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d("Tank", "TankHost - onCreate");
 		super.onCreate(savedInstanceState);
 		mode = Mode.Lobby;
 		setContentView(R.layout.lobby);
@@ -258,7 +260,8 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	}
 	
 	@Override
-	protected void onPause() {
+	protected void onStop() {
+		Log.d("Tank", "onStop");
 		for(BTClient c : clients) {
 			if(c.mBTConnectedThread == null) //host doesn't have one
 				continue;
@@ -279,8 +282,8 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 			}
 		}
 		clients.clear();
+		super.onStop();
 		this.finish();
-		super.onPause();
 	}
 	
 	/**
