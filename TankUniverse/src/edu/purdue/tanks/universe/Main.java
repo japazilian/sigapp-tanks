@@ -11,8 +11,7 @@ import android.widget.EditText;
 public class Main extends Activity implements OnClickListener, ColorPickerDialog.OnColorChangedListener{
     private EditText username;
     private int color;
-	// Hello World
-    //Main Cooment
+    
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class Main extends Activity implements OnClickListener, ColorPickerDialog
 		}
 		if(v.getId() == R.id.btn_join)
 		{
-			if(username.getText().toString().length() == 0)
+			if(username.getText().toString().length() == 0 || color == 0)
 				return;
 			Intent i = new Intent(this, GameClient.class);
 			i.putExtra("username", username.getText().toString());
@@ -48,7 +47,7 @@ public class Main extends Activity implements OnClickListener, ColorPickerDialog
 		}
 		else if(v.getId() == R.id.btn_host)
 		{
-			if(username.getText().toString().length() == 0)
+			if(username.getText().toString().length() == 0 || color == 0)
 				return;
 			Intent i = new Intent(this, GameHost.class);
 			i.putExtra("username", username.getText().toString());
