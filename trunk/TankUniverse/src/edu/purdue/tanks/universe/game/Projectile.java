@@ -74,6 +74,10 @@ public class Projectile extends GameObject {
 	@Override
 	public void update(double time) {
 		super.update(time);
+		//switch()
+//		time = System.currentTimeMillis() - time;
+//		posx += (float)((Math.cos(rotation + 90.0f) * Math.PI/180.0) * vel)*time; // vel(h) * cos(theta) = vx(a)*time
+//		posy += (float)((Math.sin(rotation + 90.0f) * Math.PI/180.0) * vel)*time; // vel(h) * sin(theta) = vx(o)*time
 		if(timer > 0 && timer < 100) {
 			posx += 0.5f*(float)(Math.cos((rotation + 90.0f) * Math.PI/180.0));;
 			posy += 0.5f*(float)(Math.sin((rotation + 90.0f) * Math.PI/180.0));;
