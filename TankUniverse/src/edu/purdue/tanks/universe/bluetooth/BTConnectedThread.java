@@ -15,6 +15,7 @@ public class BTConnectedThread extends Thread {
     public Handler mHandler;
     private ArrayList<BTClient> clients;
     boolean isHost;
+    public boolean done = false;
     
     public BTConnectedThread(BluetoothSocket socket, Handler mHandler) {
     	// This one is for clients
@@ -61,7 +62,7 @@ public class BTConnectedThread extends Thread {
         int bytes; // bytes returned from read()
 
         // Keep listening to the InputStream until an exception occurs
-        while (true) {
+        while (!done) {
             try {
             	sleep(20);
                 // Read from the InputStream

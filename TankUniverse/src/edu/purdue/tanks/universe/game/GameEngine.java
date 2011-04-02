@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class GameEngine extends Thread
 {
+	public boolean done = false;
 	/**
 	 * constructor for GameEngine
 	 * @param gameObjects
@@ -21,7 +22,7 @@ public class GameEngine extends Thread
 	@Override
 	public void run()
 	{
-		while(true) // outer game loop
+		while(!done) // outer game loop
 		{
 			try{Thread.sleep(30);}catch(Exception e){}
 			for(GameObject g:gameObjects)

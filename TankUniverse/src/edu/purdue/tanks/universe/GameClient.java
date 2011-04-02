@@ -272,17 +272,17 @@ public class GameClient extends Activity implements OnTouchListener {
 	}
 
 	@Override
-	protected void onStop() {
+	protected void onPause() {
 		if(mBTConnectedThread != null) {
 			mBTConnectedThread.write((LobbyConstants.clientDisconnect +
 						clientID).getBytes());
-			mBTConnectedThread.interrupt();
+			mBTConnectedThread.done = true;
 		}
 		if (mode == Mode.Game) {
 			if (gameEngine != null)
-				gameEngine.interrupt();
+				gameEngine.done = true;
 			if (sendUpdatesThread != null)
-				sendUpdatesThread.interrupt();
+				sendUpdatesDone = true;
 		}
 		this.finish();
 		super.onPause();
@@ -302,6 +302,8 @@ public class GameClient extends Activity implements OnTouchListener {
 	/**
 	 * ---------ALL GAME RELATED METHODS START HERE----------
 	 */
+	
+	private boolean sendUpdatesDone = false;
 	
 	/**
 	 * Used to inialize elements that were originally done in the onCreate
@@ -376,7 +378,7 @@ public class GameClient extends Activity implements OnTouchListener {
     	
     	sendUpdatesThread = new Thread(new Runnable(){
 			public void run() {
-				while(true) {
+				while(!sendUpdatesDone) {
 		    		try {
 		    			Thread.sleep(20);
 		    			String update = LobbyConstants.clientPosition;
