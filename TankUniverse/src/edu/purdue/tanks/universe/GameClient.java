@@ -2,18 +2,6 @@ package edu.purdue.tanks.universe;
 
 import java.util.ArrayList;
 
-import edu.purdue.tanks.universe.bluetooth.BTClient;
-import edu.purdue.tanks.universe.bluetooth.BTConnectThread;
-import edu.purdue.tanks.universe.bluetooth.BTConnectedThread;
-import edu.purdue.tanks.universe.controls.AnalogStick;
-import edu.purdue.tanks.universe.game.EnemyTank;
-import edu.purdue.tanks.universe.game.GameEngine;
-import edu.purdue.tanks.universe.game.GameObject;
-import edu.purdue.tanks.universe.game.GameRenderer;
-import edu.purdue.tanks.universe.game.PlayerTank;
-import edu.purdue.tanks.universe.game.Projectile;
-import edu.purdue.tanks.universe.game.Wall;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -27,12 +15,24 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.purdue.tanks.universe.bluetooth.BTClient;
+import edu.purdue.tanks.universe.bluetooth.BTConnectThread;
+import edu.purdue.tanks.universe.bluetooth.BTConnectedThread;
+import edu.purdue.tanks.universe.controls.AnalogStick;
+import edu.purdue.tanks.universe.game.EnemyTank;
+import edu.purdue.tanks.universe.game.GameEngine;
+import edu.purdue.tanks.universe.game.GameObject;
+import edu.purdue.tanks.universe.game.GameRenderer;
+import edu.purdue.tanks.universe.game.PlayerTank;
+import edu.purdue.tanks.universe.game.Projectile;
+import edu.purdue.tanks.universe.game.Wall;
 
 public class GameClient extends Activity implements OnTouchListener {
 	
@@ -85,6 +85,7 @@ public class GameClient extends Activity implements OnTouchListener {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d("Tank", "TankClient - onCreate");
 		super.onCreate(savedInstanceState);
 		mode = Mode.Lobby;
 		setContentView(R.layout.lobby);
@@ -272,7 +273,8 @@ public class GameClient extends Activity implements OnTouchListener {
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onStop() {
+		Log.d("Tank", "onStop");
 		if(mBTConnectedThread != null) {
 			mBTConnectedThread.write((LobbyConstants.clientDisconnect +
 						clientID).getBytes());
@@ -284,8 +286,8 @@ public class GameClient extends Activity implements OnTouchListener {
 			if (sendUpdatesThread != null)
 				sendUpdatesDone = true;
 		}
+		super.onStop();
 		this.finish();
-		super.onPause();
 	}
 
 	/**
