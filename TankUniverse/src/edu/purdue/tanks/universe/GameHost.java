@@ -49,7 +49,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		private GameRenderer renderer; //the game renderer
 		private PlayerTank player; //Copy of the player(me)'s information
 		private static ArrayList<GameObject> gameObjects; //copy of the the GameObjects
-		private static ArrayList<GameObject> uiObjects; //copy of the the UI
+		//private static ArrayList<GameObject> uiObjects; //copy of the the UI
 		private GameEngine gameEngine;
 		boolean running  = true;
 		private Thread[] sendUpdatesThread;
@@ -366,7 +366,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
         aStick.posy = -0.00275f*height;
         aStick.x = -0.00275f*width;
         aStick.y = -0.00275f*height;
-        gameObjects.add(aStick);
+        //gameObjects.add(aStick);
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // had to initialize and add them in the list before
         // initializing the renderer to avoid weird opengl results
