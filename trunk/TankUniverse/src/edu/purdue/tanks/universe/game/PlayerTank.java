@@ -6,9 +6,14 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.util.Log;
 
 public class PlayerTank extends GameObject {
 	private FloatBuffer vertexBuffer;
+	public float vr = 0;
+	public float vx = 0;
+	public float vy = 0;
+	public float speed = 5;
 	private float[] vertices = {  // Vertices for the square
 		      -0.75f, -0.75f,  0.0f,  // 0. left-bottom
 		       0.75f, -0.75f,  0.0f,  // 1. right-bottom
@@ -26,6 +31,7 @@ public class PlayerTank extends GameObject {
 	         
 	    vertexBuffer.put(vertices);         // Copy data into buffer
 		vertexBuffer.position(0);
+		prev_time = System.currentTimeMillis();
 	}
 
 	@Override
@@ -60,6 +66,11 @@ public class PlayerTank extends GameObject {
 	@Override
 	public void update(double time) {
 		super.update(time);
+		rotation = vr;
+		posx += (float)(time - prev_time)*(0.001)*vx; 
+		posy += (float)(time - prev_time)*(0.001)*vy;
+		prev_time = time;
+		//Log.d("tank", (time-prev_time) + "/" + vx + "/" + "/" + vy);
 	}
 
 }

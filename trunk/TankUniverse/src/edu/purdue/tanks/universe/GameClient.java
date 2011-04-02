@@ -55,6 +55,7 @@ public class GameClient extends Activity implements OnTouchListener {
 	private GameRenderer renderer; //the game renderer
 	private PlayerTank player; //Copy of the player(me)'s information
 	private static ArrayList<GameObject> gameObjects; //copy of the the GameObjects
+	private static ArrayList<GameObject> uiObjects; //copy of the the UI
 	private GameEngine gameEngine;
 	boolean running  = true;
 	private Thread sendUpdatesThread;
@@ -396,8 +397,8 @@ public class GameClient extends Activity implements OnTouchListener {
 
 	public boolean onTouch(View v, MotionEvent ev) {
 		if((ev.getAction() == MotionEvent.ACTION_UP || ev.getX(0) > width/2.0f || ev.getY(0) < height/2.0f) && ev.getPointerCount() == 1) {
-			 vx = 0;
-			 vy = 0;
+			 player.vx = 0;
+			 player.vy = 0;
 			 player.inmotion = 0;
 			 if (p.timer == 0 && Math.abs(aButtonX-ev.getX(0)) < 50 && Math.abs(aButtonY-ev.getY(0)) < 50) {
 				 bullet_sound.seekTo(0);
@@ -412,14 +413,14 @@ public class GameClient extends Activity implements OnTouchListener {
 		 }
 		 else if (ev.getX(0) < width/2.0f && ev.getY(0) > height/2.0f) {
 			 //90 degree is subtracted because the image of the tank is facing north
-			 vr = (float)(Math.atan2(-(ev.getRawY() - aStickY), (ev.getRawX() - aStickX)) *180.0/Math.PI) - 90.0f;
-			 vx = 0.1f*(float)(Math.cos((player.rotation + 90.0f) * Math.PI/180.0));
-			 vy = 0.1f*(float)(Math.sin((player.rotation + 90.0f) * Math.PI/180.0));	
+			 player.vr = (float)(Math.atan2(-(ev.getRawY() - aStickY), (ev.getRawX() - aStickX)) *180.0/Math.PI) - 90.0f;
+			 player.vx = player.speed*(float)(Math.cos((player.rotation + 90.0f) * Math.PI/180.0));
+			 player.vy = player.speed*(float)(Math.sin((player.rotation + 90.0f) * Math.PI/180.0));	
 			 player.inmotion = 1;
 		 }
 		 else {
-			 vx = 0;
-			 vy = 0;
+			 player.vx = 0;
+			 player.vy = 0;
 			 player.inmotion = 0;
 		 }
 		 int n;
@@ -435,17 +436,6 @@ public class GameClient extends Activity implements OnTouchListener {
 		 }
 		 
 		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"vr="+vr +"\n"+n);
-
-		 player.rotation = vr;
-		 player.posx += vx; 
-		 player.posy += vy;
-		 
-		 //player.inmotion = 0;
-		 //vx = 0;
-		 //vy = 0;
-		 
-		 aStick.posx = -0.00275f*width + player.inmotion*0.15f*(float)(Math.cos((player.rotation + 90.0f) * Math.PI/180.0));
-	     aStick.posy = -0.00275f*height + player.inmotion*0.15f*(float)(Math.sin((player.rotation + 90.0f) * Math.PI/180.0));
 		 
 		 return true;
 	}
