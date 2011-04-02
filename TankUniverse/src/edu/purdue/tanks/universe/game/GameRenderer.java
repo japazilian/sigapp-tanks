@@ -137,16 +137,6 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    //!!should only be called once in one draw or never
 	    gl.glLoadIdentity();                 // Reset model-view matrix ( NEW )
 	    
-	    
-	    //gl.glEnable(GL10.GL_BLEND);
-        //gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        //gl.glColor4x(0x10000, 0x10000, 0x10000, 0x10000);
-	    gl.glPushMatrix();
-	    gl.glTranslatef(1,0.5f,0);
-	    gl.glTranslatef(player.inmotion*0.15f*(float)(Math.cos((player.rotation + 90.0f) * Math.PI/180.0)), player.inmotion*0.15f*(float)(Math.sin((player.rotation + 90.0f) * Math.PI/180.0)), -13.0f);
-	    //ef.draw(gl,imageResources,0,0);
-	    gl.glPopMatrix();
-	    
 	    /* view angle */
 	    //GLU.gluLookAt(gl, gameObjects.get(0).posx, gameObjects.get(0).posy, 20.0f, gameObjects.get(0).posx, gameObjects.get(0).posy, 0.0f, 0.0f, 1.0f, 0.0f);
 	    gl.glTranslatef(0.0f, 0.0f, -20.0f);
@@ -161,7 +151,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    for (GameObject g:gameObjects) {
 	    	g.draw(gl, imageResources, player.posx, player.posy);
 	    }
-	    
+	    //for (GameObject g:uiObjects) {
+	    //	g.draw(gl, imageResources, player.posx, player.posy);
+	    //}
 	}
 
 }
