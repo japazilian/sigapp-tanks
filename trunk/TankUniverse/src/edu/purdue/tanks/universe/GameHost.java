@@ -258,23 +258,24 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	}
 	
 	@Override
-	protected void onStop() {
+	protected void onPause() {
 		for(BTClient c : clients) {
 			if(c.mBTConnectedThread == null) //host doesn't have one
 				continue;
 			c.mBTConnectedThread.write(LobbyConstants.hostDisconnect.getBytes());
-			c.mBTConnectedThread.cancel();
+			c.mBTConnectedThread.done = true;
 		}
 		if (mode == Mode.Lobby) {
 			if (mBTAcceptThread != null)
-				mBTAcceptThread.cancel();
+				mBTAcceptThread.done = true;
 		}
 		if (mode == Mode.Game) {
 			if (gameEngine != null)
-				gameEngine.interrupt();
+				gameEngine.done = true;
 			if (sendUpdatesThread != null) {
-				for(int i=0; i<sendUpdatesThread.length; i++)
-					sendUpdatesThread[i].interrupt();
+				//for(int i=0; i<sendUpdatesThread.length; i++)
+				//	sendUpdatesThread[i].interrupt();
+				sendUpdatesDone = true;
 			}
 		}
 		clients.clear();
@@ -308,6 +309,8 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	/**
 	 * ---------ALL GAME RELATED METHODS START HERE----------
 	 */
+	
+	private boolean sendUpdatesDone = false;
 	
 	/**
 	 * Used to inialize elements that were originally done in the onCreate
@@ -388,7 +391,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
     			continue;
     		Thread updateClientThread = new Thread(new Runnable(){
     			public void run() {
-    				while(true) {
+    				while(!sendUpdatesDone) {
     		    		try {
     		    			Thread.sleep(20);
     		    			String update = LobbyConstants.playerLocations;

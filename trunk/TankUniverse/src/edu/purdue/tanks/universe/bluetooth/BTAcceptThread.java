@@ -20,6 +20,7 @@ public class BTAcceptThread extends Thread {
     private String NAME = "TankUniverse";
     private ArrayList<BTClient> clients;
     private int newUserId = 1; // host has client id 0 
+    public boolean done = false;
 
     public BTAcceptThread(BluetoothAdapter bta, Handler mHandler, 
     		ArrayList<BTClient> clients) {
@@ -40,7 +41,7 @@ public class BTAcceptThread extends Thread {
     public void run() {
         BluetoothSocket socket = null;
         // Keep listening until exception occurs or a socket is returned
-        while (true) {
+        while (!done) {
             try {
                 socket = mmServerSocket.accept();
             } catch (IOException e) {	}
