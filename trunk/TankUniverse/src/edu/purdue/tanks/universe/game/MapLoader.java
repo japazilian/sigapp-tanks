@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class MapLoader {
 	//constructor: Call Load function
-	public int row, col;
+	public static int row, col;
 	public final static int Normal =0;
 	public final static int Steel =1;
 	public final static int Grass =2;
@@ -18,12 +18,9 @@ public class MapLoader {
 	public final static int Ice =4;
 	public final static int Brick =5;
 	
-	public int[][] map;
+	public static int[][] map;
 	
-	MapLoader(Context myContext, String fileName)
-	{
-		load(myContext, fileName);
-	}
+
 	
 	//load the map from the text file.
 	/**
@@ -42,7 +39,7 @@ public class MapLoader {
 		B        B B
 		BBBBBBBBBBBB
 	 */
-	public void load(Context myContext, String fileName)
+	public static int[][] load(Context myContext, String fileName)
 	{
 		try {
 			InputStream inStream = myContext.getAssets().open(fileName);
@@ -80,6 +77,6 @@ public class MapLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		return map;
 	}
 }
