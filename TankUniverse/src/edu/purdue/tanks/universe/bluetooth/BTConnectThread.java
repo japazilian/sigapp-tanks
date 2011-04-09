@@ -41,7 +41,11 @@ public class BTConnectThread extends Thread {
         try {
             // Connect the device through the socket. This will block
             // until it succeeds or throws an exception
-            mmSocket.connect();
+        	while(true) {
+        		mmSocket.connect();
+        		if(mmSocket != null)
+        			break;
+        	}
         } catch (IOException connectException) {
             // Unable to connect; close the socket and get out
             try {
