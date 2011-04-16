@@ -374,7 +374,7 @@ public class GameClient extends Activity implements OnTouchListener {
     	bullet_sound = new MediaPlayer();
     	bullet_sound = MediaPlayer.create(getBaseContext(), R.raw.barret);
     	
-    	gameEngine = new GameEngine(gameObjects);
+    	gameEngine = new GameEngine(gameObjects, mapGrid);
     	gameEngine.start();
     	
     	sendUpdatesThread = new Thread(new Runnable(){
