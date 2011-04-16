@@ -1,13 +1,13 @@
 package edu.purdue.tanks.universe.game;
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.util.Log;
 import android.widget.Toast;
-import edu.purdue.tanks.universe.R;
 
 
 public class MapLoader {
@@ -45,20 +45,25 @@ public class MapLoader {
 	{
 		try {
 			
-			InputStream inStream = myContext.getResources().openRawResource(resId);
+			File f = new File("/sdcard/Tankmaps/output.txt");
+			InputStream inStream = myContext.getResources().openRawResource(resId);//new FileInputStream(f);
 			Scanner scanner = new Scanner(inStream);
+			BufferedReader buf = new BufferedReader(new InputStreamReader(inStream));
 			row = scanner.nextInt();
 			col = scanner.nextInt();
 			map = new char[row][col];
-			String s = scanner.nextLine();
+			buf.readLine();
+			String s = buf.readLine();
 			String text = "row: " + row + " col: " + col;
 			for (int j=row-1;j>=0;j--)
 			{
+				Log.d("Tank", "reading row: "+j);
 				//i = x / j = y
-				s = scanner.nextLine();
+				s = buf.readLine();
 				text =text +  "\n";
 				for (int i=0; i<col; i++)
 				{
+					Log.d("Tank", "reading col: "+i);
 					char c = s.charAt(i);
 					//System.out.println(c+c+c+c+c);
 					switch (c)
