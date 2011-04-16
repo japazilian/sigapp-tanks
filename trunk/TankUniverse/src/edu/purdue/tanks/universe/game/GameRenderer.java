@@ -180,16 +180,14 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    gl.glPopMatrix();
 	    
 	    gl.glPushMatrix();
-	   // gl.glTranslatef(-player.posx, -player.posy, -0.1f);
-	    //map.draw(gl);
-	    for (int i = (int)(player.posx-10);i<=(int)(player.posx+10);i++) {
-	    	for(int j = (int)(player.posy-10);j<=(int)(player.posy+10);j++) {
+	    //gl.glTranslatef(-player.posx, -player.posy, 0.0f);
+	    for (int i = (int)(player.posx-10.0f);i<=(int)(player.posx+10.0f);i++) {
+	    	for(int j = (int)(player.posy-10.0f);j<=(int)(player.posy+10.0f);j++) {
 	    		if (i >= 0 && i<=95 && j >= 0 && j<=95) {
 	    			if (mapGrid[i][j] != '0') {
 	    				gl.glPushMatrix();
-	    				gl.glTranslatef(i-player.posx, j-player.posy, 0);
-	    				//mapObjects.get(0).draw(gl, imageResources, player.posx, player.posy);
-	    				//normal.draw(gl);
+	    				gl.glTranslatef((float)i-player.posx, (float)j-player.posy, 0);
+	    				//gl.glTranslatef(i, j, 0);
 	    				//System.out.println("YES YES YES YES!");
 	    				switch (mapGrid[i][j]) {
 	    					case '1': steel.draw(gl);
@@ -212,7 +210,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    			}
 	    			//System.out.println("NO NO NO NO NO!");
 	    		}
+	    		//gl.glTranslatef(0, 1.0f, 0);
 	    	}
+	    	//gl.glTranslatef(1.0f, 0, 0);
 	    }
 	    gl.glPopMatrix();	
 	    count = (count+1)%10;
