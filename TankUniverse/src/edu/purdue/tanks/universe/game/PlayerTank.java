@@ -70,10 +70,16 @@ public class PlayerTank extends GameObject {
 	public void update(double time, char[][] mapGrid) {
 		super.update(time, mapGrid);
 		rotation = vr;
-		if (isCollision((int)Math.round(posx + (float)(time - prev_time)*(0.001)*vx), (int)Math.round(posy + (float)(time - prev_time)*(0.001)*vy),mapGrid)) return;
-		posx += (float)(time - prev_time)*(0.001)*vx; 
-		posy += (float)(time - prev_time)*(0.001)*vy;
-		prev_time = time;
+		if (isCollision((int)Math.round(posx + 
+				(float)(time - prev_time)*(0.001)*vx), (int)Math.round(posy + 
+						(float)(time - prev_time)*(0.001)*vy),mapGrid)) {
+			prev_time = time;
+		}
+		else {
+			posx += (float)(time - prev_time)*(0.001)*vx; 
+			posy += (float)(time - prev_time)*(0.001)*vy;
+			prev_time = time;
+		}
 		//Log.d("tank", (time-prev_time) + "/" + vx + "/" + "/" + vy);
 	}
 
