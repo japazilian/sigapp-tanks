@@ -1,6 +1,6 @@
 package edu.purdue.tanks.universe.game;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class GameEngine extends Thread
@@ -10,8 +10,8 @@ public class GameEngine extends Thread
 	 * constructor for GameEngine
 	 * @param gameObjects
 	 */
-	ArrayList<GameObject> gameObjects;
-	public GameEngine(ArrayList <GameObject> gameObjects)
+	Vector<GameObject> gameObjects;
+	public GameEngine(Vector<GameObject> gameObjects)
 	{
 		this.gameObjects = gameObjects;
 	}
@@ -28,11 +28,15 @@ public class GameEngine extends Thread
 			for(GameObject g:gameObjects)
 			{
 				if(g.needsToBeRemoved) {
-					gameObjects.remove(g);
+					removeObject(g);
 				}					
 				double time = System.currentTimeMillis();
 				g.update(time);
 			}
 		}
+	}
+	
+	public synchronized void removeObject(GameObject o) {
+		gameObjects.remove(o);
 	}
 }

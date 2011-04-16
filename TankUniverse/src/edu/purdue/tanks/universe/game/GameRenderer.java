@@ -1,6 +1,7 @@
 package edu.purdue.tanks.universe.game;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -16,7 +17,7 @@ import edu.purdue.tanks.universe.controls.AnalogStick;
 
 public class GameRenderer implements GLSurfaceView.Renderer {
 	Context context;
-	ArrayList<GameObject> gameObjects;
+	Vector<GameObject> gameObjects;
 	public ArrayList<GameObject> mapObjects;
 	char mapGrid[][] = new char[96][96];
 	PlayerTank player; //copy of player info
@@ -56,7 +57,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	AnalogStick aStick;
 	PlayerTank eT;
 	
-	public GameRenderer (Context context, ArrayList<GameObject> gameObjects, char[][] mapGrid, PlayerTank player, AnalogStick aStick) {
+	public GameRenderer (Context context, Vector<GameObject> gameObjects, char[][] mapGrid, PlayerTank player, AnalogStick aStick) {
 		this.context = context;
 		this.gameObjects = gameObjects;
 		this.mapGrid = mapGrid;
@@ -160,7 +161,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	}
 	
 	//Drawing the current frame.
-	public void onDrawFrame(GL10 gl) {
+	public synchronized void onDrawFrame(GL10 gl) {
 		// Clear color and depth buffers using clear-value set earlier
 	    gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 	     
