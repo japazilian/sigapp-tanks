@@ -57,7 +57,8 @@ public class BTConnectedThread extends Thread {
         mmOutStream = tmpOut;
     }
 
-    public void run() {
+    @Override
+	public void run() {
         byte[] buffer = new byte[2048];  // buffer store for the stream
         int bytes; // bytes returned from read()
 

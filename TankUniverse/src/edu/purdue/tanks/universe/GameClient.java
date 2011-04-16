@@ -176,7 +176,8 @@ public class GameClient extends Activity implements OnTouchListener {
 	
 	// Create a BroadcastReceiver for ACTION_FOUND
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-	    public void onReceive(Context context, Intent intent) {
+	    @Override
+		public void onReceive(Context context, Intent intent) {
 	        String action = intent.getAction();
 	        // When discovery finds a device
 	        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
