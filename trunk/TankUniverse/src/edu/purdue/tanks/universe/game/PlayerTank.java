@@ -6,8 +6,6 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.util.Log;
-
 public class PlayerTank extends GameObject {
 	private FloatBuffer vertexBuffer;
 	public float vr = 0;
@@ -32,6 +30,7 @@ public class PlayerTank extends GameObject {
 	    vertexBuffer.put(vertices);         // Copy data into buffer
 		vertexBuffer.position(0);
 		prev_time = System.currentTimeMillis();
+		
 	}
 
 	@Override

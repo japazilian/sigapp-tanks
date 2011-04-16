@@ -20,7 +20,7 @@ public class MapLoader {
 	public final static int Ice =4;
 	public final static int Brick =5;
 	
-	public static int[][] map;
+	public static char[][] map;
 	
 
 	
@@ -41,7 +41,7 @@ public class MapLoader {
 		B        B B
 		BBBBBBBBBBBB
 	 */
-	public static int[][] load(Context myContext, int resId)//String fileName)
+	public static char[][] load(Context myContext, int resId)//String fileName)
 	{
 		try {
 			
@@ -49,7 +49,7 @@ public class MapLoader {
 			Scanner scanner = new Scanner(inStream);
 			row = scanner.nextInt();
 			col = scanner.nextInt();
-			map = new int[row][col];
+			map = new char[row][col];
 			String s = scanner.nextLine();
 			String text = "row: " + row + " col: " + col;
 			for (int j=row-1;j>=0;j--)
@@ -63,27 +63,27 @@ public class MapLoader {
 					//System.out.println(c+c+c+c+c);
 					switch (c)
 					{
-						case '5': map[i][j] = 5;//Brick; 
+						case '5': map[i][j] = '5';//Brick; 
 										break;
-						case '4': map[i][j] = 4;//Steel; 
+						case '4': map[i][j] = '4';//Steel; 
 										break;
-						case '3': map[i][j] = 3;//Grass; 
+						case '3': map[i][j] = '3';//Grass; 
 										break;
-						case '2': map[i][j] = 2;//Water; 
+						case '2': map[i][j] = '2';//Water; 
 										break;
-						case '1': map[i][j] = 1;//Ice; 
+						case '1': map[i][j] = '1';//Ice; 
 										break;
-						case '0': map[i][j] = 0;//Normal;
+						case '0': map[i][j] = '0';//Normal;
 										break;
 						default: break;
 					}
-					text = text + map[i][j];
+					//text = text + map[i][j];
 				}
 			}
 			
-			int duration = Toast.LENGTH_LONG;
-			Toast toast = Toast.makeText(myContext, text, duration);
-			toast.show();
+			//int duration = Toast.LENGTH_LONG;
+			//Toast toast = Toast.makeText(myContext, text, duration);
+			//toast.show();
 					
 		} catch (Exception e) {
 			e.printStackTrace();
