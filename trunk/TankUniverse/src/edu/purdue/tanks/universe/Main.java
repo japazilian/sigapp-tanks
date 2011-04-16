@@ -33,7 +33,7 @@ public class Main extends Activity implements OnClickListener, ColorPickerDialog
 	public void onClick(View v) {	
 		if(v.getId() == R.id.btn_pickColor) {
 			ColorPickerDialog dialog = new ColorPickerDialog(this, 
-					((ColorPickerDialog.OnColorChangedListener)this), color);
+					(this), color);
 			dialog.show();
 		}
 		if(v.getId() == R.id.btn_join)
