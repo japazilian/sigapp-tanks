@@ -403,8 +403,6 @@ public class GameClient extends Activity implements OnTouchListener {
 				 Projectile p = new Projectile(GameObject.TYPE_BULLET);
 				 p.posx = player.posx;
 				 p.posy = player.posy;
-				 p.startPosX = p.posx;
-				 p.startPosY = p.posy;
 				 p.rotation = player.rotation;
 				 addToGameObjects(p);
 				 bullet_sound.start();
@@ -428,8 +426,6 @@ public class GameClient extends Activity implements OnTouchListener {
 			 Projectile p = new Projectile(GameObject.TYPE_BULLET);
 			 p.posx = player.posx;
 			 p.posy = player.posy;
-			 p.startPosX = p.posx;
-			 p.startPosY = p.posy;
 			 p.rotation = player.rotation;
 			 addToGameObjects(p);
 			 bullet_sound.start();
