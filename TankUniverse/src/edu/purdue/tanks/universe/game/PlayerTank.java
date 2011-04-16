@@ -59,8 +59,6 @@ public class PlayerTank extends GameObject {
 
 	@Override
 	public boolean isCollision(int tankx, int tanky, char[][] mapGrid) {
-		if (tankx<0 || tanky<0) return true;
-		if (tankx>96 || tanky>96) return true;
 		if (mapGrid[tankx][tanky]!='0') return true;
 		// take the grids
 		return false;
@@ -70,16 +68,18 @@ public class PlayerTank extends GameObject {
 	public void update(double time, char[][] mapGrid) {
 		super.update(time, mapGrid);
 		rotation = vr;
-		if (isCollision((int)Math.round(posx + 
-				(float)(time - prev_time)*(0.001)*vx), (int)Math.round(posy + 
-						(float)(time - prev_time)*(0.001)*vy),mapGrid)) {
-			prev_time = time;
+		double tempx = posx + (float)(time - prev_time)*(0.001)*vx;
+		double tempy = posy + (float)(time - prev_time)*(0.001)*vy;
+		
+		if (tempx>=0 && tempy>=0 && tempx<95 && tempy<95)
+		{
+			if (!isCollision((int)Math.round(tempx), (int)Math.round(tempy) ,mapGrid) ) 
+			{
+				posx = (float) tempx; 
+				posy = (float) tempy;
+			}
 		}
-		else {
-			posx += (float)(time - prev_time)*(0.001)*vx; 
-			posy += (float)(time - prev_time)*(0.001)*vy;
-			prev_time = time;
-		}
+		prev_time = time;
 		//Log.d("tank", (time-prev_time) + "/" + vx + "/" + "/" + vy);
 	}
 
