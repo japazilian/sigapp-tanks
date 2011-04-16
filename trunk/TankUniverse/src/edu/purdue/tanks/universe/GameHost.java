@@ -73,7 +73,6 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		float vr = 0;
 		float vx = 0;
 		float vy = 0;
-		Projectile p;
 		AnalogStick aStick;
 	
 	
@@ -355,17 +354,6 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
         player.posy = 5.0f;
         //gameObjects.add(player);
         
-        Wall w = new Wall();
-        w.posx = 0.0f;
-        w.posy = 0.0f;
-        mapObjects.add(w);
-        
-        p = new Projectile(3);
-        p.posx = player.posx;
-        p.posy = player.posy;
-        p.rotation = player.rotation;
-        gameObjects.add(p);
-        
         aStick = new AnalogStick();
         aStick.posx = -0.00275f*width;
         aStick.posy = -0.00275f*height;
@@ -433,14 +421,15 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 			 player.vx = 0;
 			 player.vy = 0;
 			 player.inmotion = 0;
-			 if (p.timer == 0 && Math.abs(aButtonX-ev.getX(0)) < 50 && Math.abs(aButtonY-ev.getY(0)) < 50) {
+			 if (Math.abs(aButtonX-ev.getX(0)) < 50 && Math.abs(aButtonY-ev.getY(0)) < 50) {
 				 bullet_sound.seekTo(0);
+				 Projectile p = new Projectile(GameObject.TYPE_BULLET);
 				 p.posx = player.posx;
 				 p.posy = player.posy;
 				 p.startPosX = p.posx;
 				 p.startPosY = p.posy;
 				 p.rotation = player.rotation;
-				 p.timer = 1;
+				 addToGameObjects(p);
 				 bullet_sound.start();
 			 }
 		 }
@@ -457,20 +446,25 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 			 player.inmotion = 0;
 		 }
 		 int n;
-		 if ((n = ev.getPointerCount()) != 1 && p.timer == 0 && Math.abs(aButtonX-ev.getX(1)) < 30 && Math.abs(aButtonY-ev.getY(1)) < 30) {
+		 if ((n = ev.getPointerCount()) != 1 && Math.abs(aButtonX-ev.getX(1)) < 30 && Math.abs(aButtonY-ev.getY(1)) < 30) {
 			 bullet_sound.seekTo(0);
+			 Projectile p = new Projectile(GameObject.TYPE_BULLET);
 			 p.posx = player.posx;
 			 p.posy = player.posy;
 			 p.startPosX = p.posx;
 			 p.startPosY = p.posy;
 			 p.rotation = player.rotation;
-			 p.timer = 1;
+			 addToGameObjects(p);
 			 bullet_sound.start();
 		 }
 		 
 		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"pos="+player.posx+"/"+ player.posy+"\n"+n);
 		 
 		 return true;
+	}
+
+	private synchronized void addToGameObjects(GameObject o) {
+		gameObjects.add(o);		
 	}
 
 	/**
