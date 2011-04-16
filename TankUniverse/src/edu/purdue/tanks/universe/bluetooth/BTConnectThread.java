@@ -34,7 +34,6 @@ public class BTConnectThread extends Thread {
         mmSocket = tmp;
     }
 
-    @Override
 	public void run() {
         // Cancel discovery because it will slow down the connection
         mBluetoothAdapter.cancelDiscovery();

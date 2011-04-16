@@ -38,7 +38,6 @@ public class BTAcceptThread extends Thread {
         mmServerSocket = tmp;
     }
 
-    @Override
 	public void run() {
         BluetoothSocket socket = null;
         // Keep listening until exception occurs or a socket is returned
