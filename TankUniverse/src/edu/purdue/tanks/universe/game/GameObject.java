@@ -26,6 +26,9 @@ public abstract class GameObject {
 	public static final int TYPE_POWERUP_SPEED = 10;
 	public static final int TYPE_POWERUP_RADAR = 11;
 	
+	public boolean needsToBeRemoved=false;
+
+	
 	public FloatBuffer texBuffer;
 	public float[] texCoords = {
 	         0.0f, 1.0f,  // A. left-bottom

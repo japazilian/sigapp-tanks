@@ -16,16 +16,11 @@ public class Projectile extends GameObject {
 		       0.375f,  0.375f,  0.0f   // 3. right-top
 	};
 	public int idtype;
-	public float startPosX;
-	public float startPosY;
-	public int timer;
+	public float vel = 0.50f;
 	
 	public Projectile(int type) {
 		super(type);
 		idtype = type;
-		timer = 0;
-		startPosX = 0;
-		startPosY = 0;
 		// Setup vertex array buffer. Vertices in float. A float has 4 bytes
 	    ByteBuffer vbb = ByteBuffer.allocateDirect(12 * 4);
 	    vbb.order(ByteOrder.nativeOrder()); // Use native byte order
@@ -39,8 +34,6 @@ public class Projectile extends GameObject {
 	public void draw(GL10 gl, int[] imageResources, float playerPosX, float playerPosY) {
 		//super.draw();
 		//gl.glFrontFace(GL10.GL_CCW);
-		if  (timer == 0)
-			return;
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		//gl.glEnable(GL10.GL_CULL_FACE);
 		//gl.glCullFace(GL10.GL_BACK);
@@ -75,16 +68,21 @@ public class Projectile extends GameObject {
 	public void update(double time) {
 		super.update(time);
 		//switch()
-//		time = System.currentTimeMillis() - time;
-//		posx += (float)((Math.cos(rotation + 90.0f) * Math.PI/180.0) * vel)*time; // vel(h) * cos(theta) = vx(a)*time
-//		posy += (float)((Math.sin(rotation + 90.0f) * Math.PI/180.0) * vel)*time; // vel(h) * sin(theta) = vx(o)*time
-		if(timer > 0 && timer < 100) {
+		double deltatime = time - prev_time;
+		posx += (float)((Math.cos(rotation + 90.0f) * Math.PI/180.0) * vel)*deltatime; // vel(h) * cos(theta) = vx(a)*time
+		posy += (float)((Math.sin(rotation + 90.0f) * Math.PI/180.0) * vel)*deltatime; // vel(h) * sin(theta) = vx(o)*time
+		prev_time = time;
+		
+		if(posx > 50 || posx < -50 || posy > 50 || posy < -50)
+			this.needsToBeRemoved = true;
+		
+		/*if(timer > 0 && timer < 100) {
 			posx += 0.5f*(float)(Math.cos((rotation + 90.0f) * Math.PI/180.0));;
 			posy += 0.5f*(float)(Math.sin((rotation + 90.0f) * Math.PI/180.0));;
 			timer++;
 		}
 		else 
-			timer = 0;
+			timer = 0;*/
 		
 	}
 
