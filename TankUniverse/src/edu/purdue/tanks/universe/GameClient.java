@@ -366,12 +366,12 @@ public class GameClient extends Activity implements OnTouchListener {
         // initializing the renderer to avoid weird opengl results
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
-        int mapGrid[][] = new int[96][96];
+        char mapGrid[][] = new char[96][96];
         for (int i = 0; i < 96; i++)
     		for (int j = 0; j < 96; j++)
-    			mapGrid[i][j] = 0;
-    		if (MapLoader.load(this, R.raw.outputfile) != null)
-    			mapGrid = MapLoader.load(this, R.raw.outputfile);
+    			mapGrid[i][j] = '0';
+        if (MapLoader.load(this, R.raw.outputfile) != null)
+        	mapGrid = MapLoader.load(this, R.raw.outputfile);
         
         /* initialize renderer */
         mGLSurfaceView = (GLSurfaceView) findViewById(R.id.glsurfaceview);//new GLSurfaceView(this);

@@ -18,7 +18,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	Context context;
 	ArrayList<GameObject> gameObjects;
 	public ArrayList<GameObject> mapObjects;
-	int mapGrid[][] = new int[96][96];
+	char mapGrid[][] = new char[96][96];
 	PlayerTank player; //copy of player info
 	int bitMaps[] = { //textures
 		R.drawable.tank_p,
@@ -56,7 +56,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	AnalogStick aStick;
 	PlayerTank eT;
 	
-	public GameRenderer (Context context, ArrayList<GameObject> gameObjects, int[][] mapGrid, PlayerTank player, AnalogStick aStick) {
+	public GameRenderer (Context context, ArrayList<GameObject> gameObjects, char[][] mapGrid, PlayerTank player, AnalogStick aStick) {
 		this.context = context;
 		this.gameObjects = gameObjects;
 		this.mapGrid = mapGrid;
@@ -184,25 +184,25 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    for (int i = (int)(player.posx-10);i<=(int)(player.posx+10);i++) {
 	    	for(int j = (int)(player.posy-10);j<=(int)(player.posy+10);j++) {
 	    		if (i >= 0 && i<=95 && j >= 0 && j<=95) {
-	    			if (mapGrid[i][j] != 0) {
+	    			if (mapGrid[i][j] != '0') {
 	    				gl.glPushMatrix();
 	    				gl.glTranslatef(i-player.posx, j-player.posy, 0);
 	    				//mapObjects.get(0).draw(gl, imageResources, player.posx, player.posy);
 	    				//normal.draw(gl);
 	    				//System.out.println("YES YES YES YES!");
 	    				switch (mapGrid[i][j]) {
-	    					case 1: steel.draw(gl);
+	    					case '1': steel.draw(gl);
 	    						break;
-	    					case 2: grass.draw(gl);
+	    					case '2': grass.draw(gl);
 	    						break;
-	    					case 3: if (count < 5)
+	    					case '3': if (count < 5)
 	    								water1.draw(gl);
 	    							else
 	    								water2.draw(gl);
 	    						break;
-	    					case 4: ice.draw(gl);
+	    					case '4': ice.draw(gl);
 	    						break;
-	    					case 5: brick.draw(gl);
+	    					case '5': brick.draw(gl);
 	    						break;
 	    					default : 
 	    						break;
