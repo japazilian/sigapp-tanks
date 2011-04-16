@@ -79,6 +79,13 @@ public class PlayerTank extends GameObject {
 				posy = (float) tempy;
 			}
 		}
+		else
+		{
+			if (tempx<0) posx = 0;
+			if (tempy<0) posy = 0;
+			if (tempx>95) posx = 95;
+			if (tempy>95) posy = 95;
+		}
 		prev_time = time;
 		//Log.d("tank", (time-prev_time) + "/" + vx + "/" + "/" + vy);
 	}
