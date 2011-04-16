@@ -1,13 +1,10 @@
 package edu.purdue.tanks.universe.game;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class MapLoader {
@@ -45,26 +42,28 @@ public class MapLoader {
 	{
 		try {
 			
-			File f = new File("/sdcard/Tankmaps/output.txt");
+			//File f = new File("/sdcard/Tankmaps/output.txt");
 			InputStream inStream = myContext.getResources().openRawResource(resId);//new FileInputStream(f);
-			Scanner scanner = new Scanner(inStream);
+			//Scanner scanner = new Scanner(inStream);
 			BufferedReader buf = new BufferedReader(new InputStreamReader(inStream));
-			row = scanner.nextInt();
-			col = scanner.nextInt();
+			//row = scanner.nextInt();
+			//col = scanner.nextInt();
+			String size = buf.readLine();
+			String[] sizes = size.split(" ");
+			row = Integer.parseInt(sizes[0]);
+			col = Integer.parseInt(sizes[1]);
 			map = new char[row][col];
-			buf.readLine();
 			String s = buf.readLine();
 			String text = "row: " + row + " col: " + col;
 			for (int j=row-1;j>=0;j--)
 			{
-				Log.d("Tank", "reading row: "+j);
 				//i = x / j = y
 				s = buf.readLine();
 				text =text +  "\n";
 				for (int i=0; i<col; i++)
 				{
-					Log.d("Tank", "reading col: "+i);
 					char c = s.charAt(i);
+					Log.d("Tank", "reading row: "+j+" col: "+i+" char: "+c);
 					//System.out.println(c+c+c+c+c);
 					switch (c)
 					{
