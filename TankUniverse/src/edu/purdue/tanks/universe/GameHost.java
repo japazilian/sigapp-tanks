@@ -74,7 +74,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		float vx = 0;
 		float vy = 0;
 		AnalogStick aStick;
-	
+		char mapGrid[][] = new char[96][96];
 	
 	private final int ACTIVITY_BT_ENABLE = 1;
 	private final int ACTIVITY_DISCOVERY_ENABLE = 2;
@@ -365,7 +365,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
         // initializing the renderer to avoid weird opengl results
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
-        char mapGrid[][] = new char[96][96];
+        //char mapGrid[][] = new char[96][96];
         for (int i = 0; i < 96; i++)
     		for (int j = 0; j < 96; j++)
     			mapGrid[i][j] = '0';
@@ -454,7 +454,8 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 			 bullet_sound.start();
 		 }
 		 
-		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"pos="+player.posx+"/"+ player.posy+"\n"+n);
+		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"pos="+player.posx+"/"+ player.posy+"\n"+n
+				 +"\nmap"+mapGrid[(int)player.posx][(int)player.posy]);
 		 
 		 return true;
 	}
