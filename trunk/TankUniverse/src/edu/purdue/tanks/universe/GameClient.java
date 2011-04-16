@@ -30,6 +30,7 @@ import edu.purdue.tanks.universe.game.EnemyTank;
 import edu.purdue.tanks.universe.game.GameEngine;
 import edu.purdue.tanks.universe.game.GameObject;
 import edu.purdue.tanks.universe.game.GameRenderer;
+import edu.purdue.tanks.universe.game.MapLoader;
 import edu.purdue.tanks.universe.game.PlayerTank;
 import edu.purdue.tanks.universe.game.Projectile;
 import edu.purdue.tanks.universe.game.Wall;
@@ -55,6 +56,7 @@ public class GameClient extends Activity implements OnTouchListener {
 	private GameRenderer renderer; //the game renderer
 	private PlayerTank player; //Copy of the player(me)'s information
 	private static ArrayList<GameObject> gameObjects; //copy of the the GameObjects
+	private static ArrayList<GameObject> mapObjects; //copy of the the mapObjects
 	//private static ArrayList<GameObject> uiObjects; //copy of the the UI
 	private GameEngine gameEngine;
 	boolean running  = true;
@@ -315,6 +317,7 @@ public class GameClient extends Activity implements OnTouchListener {
 	private void initializeGame() {
 		setContentView(R.layout.game);
 		gameObjects = new ArrayList<GameObject>();
+		mapObjects = new ArrayList<GameObject>();
 		for(BTClient c : clients) {
 			if(c.id == clientID) {
 				c.tank = new PlayerTank();
@@ -344,7 +347,7 @@ public class GameClient extends Activity implements OnTouchListener {
         Wall w = new Wall();
         w.posx = 4.0f;
         w.posy = 4.0f;
-        gameObjects.add(w); 
+        mapObjects.add(w); 
         
         p = new Projectile(3);
         p.posx = player.posx;
@@ -363,9 +366,16 @@ public class GameClient extends Activity implements OnTouchListener {
         // initializing the renderer to avoid weird opengl results
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
+        int mapGrid[][] = new int[96][96];
+        for (int i = 0; i < 96; i++)
+    		for (int j = 0; j < 96; j++)
+    			mapGrid[i][j] = 0;
+    		if (MapLoader.load(this, R.raw.outputfile) != null)
+    			mapGrid = MapLoader.load(this, R.raw.outputfile);
+        
         /* initialize renderer */
         mGLSurfaceView = (GLSurfaceView) findViewById(R.id.glsurfaceview);//new GLSurfaceView(this);
-        renderer = (new GameRenderer(this, gameObjects, player, aStick)); 
+        renderer = (new GameRenderer(this, gameObjects, mapGrid, player, aStick)); 
         mGLSurfaceView.setRenderer(renderer);
         mGLSurfaceView.setOnTouchListener(this);
         

@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.widget.Toast;
+import edu.purdue.tanks.universe.R;
 
 
 public class MapLoader {
@@ -39,31 +41,40 @@ public class MapLoader {
 		B        B B
 		BBBBBBBBBBBB
 	 */
-	public static int[][] load(Context myContext, String fileName)
+	public static int[][] load(Context myContext, int resId)//String fileName)
 	{
 		try {
-			InputStream inStream = myContext.getAssets().open(fileName);
+			
+			InputStream inStream = myContext.getResources().openRawResource(resId);
 			Scanner scanner = new Scanner(inStream);
 			row = scanner.nextInt();
 			col = scanner.nextInt();
 			map = new int[row][col];
 			String s = scanner.nextLine();
 			String text = "row: " + row + " col: " + col;
-			for (int i=0;i<row;i++)
+			for (int j=row-1;j>=0;j--)
 			{
+				//i = x / j = y
 				s = scanner.nextLine();
 				text =text +  "\n";
-				for (int j=0; j<col; j++)
+				for (int i=0; i<col; i++)
 				{
-					char c = s.charAt(j);
+					char c = s.charAt(i);
+					//System.out.println(c+c+c+c+c);
 					switch (c)
 					{
-						case 'B': map[i][j] = Brick; break;
-						case 'S': map[i][j] = Steel; break;
-						case 'G': map[i][j] = Grass; break;
-						case 'W': map[i][j] = Water; break;
-						case 'I': map[i][j] = Ice; break;
-						case ' ': map[i][j] = Normal; break;
+						case '5': map[i][j] = 5;//Brick; 
+										break;
+						case '4': map[i][j] = 4;//Steel; 
+										break;
+						case '3': map[i][j] = 3;//Grass; 
+										break;
+						case '2': map[i][j] = 2;//Water; 
+										break;
+						case '1': map[i][j] = 1;//Ice; 
+										break;
+						case '0': map[i][j] = 0;//Normal;
+										break;
 						default: break;
 					}
 					text = text + map[i][j];
@@ -74,8 +85,9 @@ public class MapLoader {
 			Toast toast = Toast.makeText(myContext, text, duration);
 			toast.show();
 					
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
 		return map;
 	}

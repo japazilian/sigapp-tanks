@@ -16,7 +16,9 @@ import edu.purdue.tanks.universe.controls.AnalogStick;
 
 public class GameRenderer implements GLSurfaceView.Renderer {
 	Context context;
-	ArrayList<GameObject> gameObjects; 
+	ArrayList<GameObject> gameObjects;
+	public ArrayList<GameObject> mapObjects;
+	int mapGrid[][] = new int[96][96];
 	PlayerTank player; //copy of player info
 	int bitMaps[] = { //textures
 		R.drawable.tank_p,
@@ -40,25 +42,48 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	int imageResources[] = new int[totalObjects];
 	
 	Tile map;
+	Tile normal;
+	Tile steel;
+	Tile grass;
+	int count = 0;
+	Tile water1;
+	Tile water2;
+	Tile ice;
+	Tile brick;
 	int width = 1;
 	int height = 1;
 	float aspect = 1;
 	AnalogStick aStick;
 	PlayerTank eT;
 	
-	public GameRenderer (Context context, ArrayList<GameObject> gameObjects, PlayerTank player, AnalogStick aStick) {
+	public GameRenderer (Context context, ArrayList<GameObject> gameObjects, int[][] mapGrid, PlayerTank player, AnalogStick aStick) {
 		this.context = context;
 		this.gameObjects = gameObjects;
+		this.mapGrid = mapGrid;
 		this.player = player;
 		this.aStick = aStick;
 		
 		map = new Tile(context, R.drawable.map, 96.0f, 96.0f);
+		normal = new Tile(context, R.drawable.normal, 1.0f, 1.0f);
+		steel = new Tile(context, R.drawable.steel, 1.0f, 1.0f);
+		grass = new Tile(context, R.drawable.grass, 1.0f, 1.0f);
+		water1 = new Tile(context, R.drawable.water1, 1.0f, 1.0f);
+		water2 = new Tile(context, R.drawable.water2, 1.0f, 1.0f);
+		ice = new Tile(context, R.drawable.ice, 1.0f, 1.0f);
+		brick = new Tile(context, R.drawable.wall, 1.0f, 1.0f);
 	}
 	
+	public ArrayList<GameObject> getMapList() {
+		return mapObjects;
+	}
 	
 	public void loadTextures(GL10 gl) {
 		gl.glGenTextures(totalObjects, imageResources, 0); // Generate OpenGL texture images
-		
+		//for (int i = 0; i < 96; i++)
+		//	for (int j = 0; j < 96; j++)
+		//		mapGrid[i][j] = 0;
+		//if (MapLoader.load(context, R.raw.outputfile) != null)
+			//mapGrid = MapLoader.load(context, R.raw.outputfile);
 		Bitmap bitmap;
 		for (int i = 0; i < totalObjects; i++) {
 			bitmap = BitmapFactory.decodeStream(context.getResources().openRawResource(bitMaps[i]));
@@ -99,7 +124,13 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    
 	    loadTextures(gl);             // Load images into textures (NEW)
 	    map.loadTexture(gl); 
-	    
+	    normal.loadTexture(gl);
+	    steel.loadTexture(gl);
+		grass.loadTexture(gl);
+		water1.loadTexture(gl);
+		water2.loadTexture(gl);
+		ice.loadTexture(gl);
+		brick.loadTexture(gl);
 	    //gl.glEnable(GL10.GL_BLEND);
 	    //gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -139,13 +170,52 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    
 	    /* view angle */
 	    //GLU.gluLookAt(gl, gameObjects.get(0).posx, gameObjects.get(0).posy, 20.0f, gameObjects.get(0).posx, gameObjects.get(0).posy, 0.0f, 0.0f, 1.0f, 0.0f);
-	    gl.glTranslatef(0.0f, 0.0f, -20.0f);
+	    gl.glTranslatef(0.0f, 0.0f, -13.0f);
 	    
 	    /* print map */
 	    gl.glPushMatrix();
-	    gl.glTranslatef(-player.posx, -player.posy, -0.1f);
+	    gl.glTranslatef(47.5f-player.posx, 47.5f-player.posy, -0.1f);
 	    map.draw(gl);
 	    gl.glPopMatrix();
+	    
+	    gl.glPushMatrix();
+	   // gl.glTranslatef(-player.posx, -player.posy, -0.1f);
+	    //map.draw(gl);
+	    for (int i = (int)(player.posx-10);i<=(int)(player.posx+10);i++) {
+	    	for(int j = (int)(player.posy-10);j<=(int)(player.posy+10);j++) {
+	    		if (i >= 0 && i<=95 && j >= 0 && j<=95) {
+	    			if (mapGrid[i][j] != 0) {
+	    				gl.glPushMatrix();
+	    				gl.glTranslatef(i-player.posx, j-player.posy, 0);
+	    				//mapObjects.get(0).draw(gl, imageResources, player.posx, player.posy);
+	    				//normal.draw(gl);
+	    				//System.out.println("YES YES YES YES!");
+	    				switch (mapGrid[i][j]) {
+	    					case 1: steel.draw(gl);
+	    						break;
+	    					case 2: grass.draw(gl);
+	    						break;
+	    					case 3: if (count < 5)
+	    								water1.draw(gl);
+	    							else
+	    								water2.draw(gl);
+	    						break;
+	    					case 4: ice.draw(gl);
+	    						break;
+	    					case 5: brick.draw(gl);
+	    						break;
+	    					default : 
+	    						break;
+	    				}
+	    				gl.glPopMatrix();
+	    			}
+	    			//System.out.println("NO NO NO NO NO!");
+	    		}
+	    	}
+	    }
+	    gl.glPopMatrix();	
+	    count = (count+1)%10;
+	   
 	   
 	    /* print all objects */
 	    for (GameObject g:gameObjects) {
@@ -154,6 +224,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    //for (GameObject g:uiObjects) {
 	    //	g.draw(gl, imageResources, player.posx, player.posy);
 	    //}
+	    
 	}
 
 }
