@@ -1,6 +1,7 @@
 package edu.purdue.tanks.universe;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -30,7 +31,6 @@ import edu.purdue.tanks.universe.game.GameRenderer;
 import edu.purdue.tanks.universe.game.MapLoader;
 import edu.purdue.tanks.universe.game.PlayerTank;
 import edu.purdue.tanks.universe.game.Projectile;
-import edu.purdue.tanks.universe.game.Wall;
 
 public class GameHost extends Activity implements OnClickListener, OnTouchListener {
 	
@@ -49,7 +49,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		private GLSurfaceView mGLSurfaceView; //layout.game holds this
 		private GameRenderer renderer; //the game renderer
 		private PlayerTank player; //Copy of the player(me)'s information
-		private static ArrayList<GameObject> gameObjects; //copy of the the GameObjects
+		private static Vector<GameObject> gameObjects; //copy of the the GameObjects
 		private static ArrayList<GameObject> mapObjects; //copy of the the mapObjects
 		//private static ArrayList<GameObject> uiObjects; //copy of the the UI
 		private GameEngine gameEngine;
@@ -325,7 +325,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	 */
 	private void initializeGame() {
 		setContentView(R.layout.game);
-		gameObjects = new ArrayList<GameObject>();
+		gameObjects = new Vector<GameObject>();
 		mapObjects = new ArrayList<GameObject>();
 		for(BTClient c : clients) {
 			if(c.id == 0) {
