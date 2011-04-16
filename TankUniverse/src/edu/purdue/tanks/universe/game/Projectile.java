@@ -60,13 +60,13 @@ public class Projectile extends GameObject {
 	}
 
 	@Override
-	public boolean isCollision(int tankx, int tanky) {
-		return super.isCollision(tankx, tanky);
+	public boolean isCollision(int tankx, int tanky, char[][] mapGrid) {
+		return super.isCollision(tankx, tanky, mapGrid);
 	}
 	
 	@Override
-	public void update(double time) {
-		super.update(time);
+	public void update(double time, char[][] mapGrid) {
+		super.update(time, mapGrid);
 		//switch()
 		double deltatime = time - prev_time;
 		posx += (float)((Math.cos(rotation + 90.0f) * Math.PI/180.0) * vel)*deltatime; // vel(h) * cos(theta) = vx(a)*time

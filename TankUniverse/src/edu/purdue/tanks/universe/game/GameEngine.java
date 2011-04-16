@@ -6,14 +6,16 @@ import java.util.Vector;
 public class GameEngine extends Thread
 {
 	public boolean done = false;
+	private static char[][] mapGrid;
 	/**
 	 * constructor for GameEngine
 	 * @param gameObjects
 	 */
 	Vector<GameObject> gameObjects;
-	public GameEngine(Vector<GameObject> gameObjects)
+	public GameEngine(Vector<GameObject> gameObjects, char[][] mapGrid)
 	{
 		this.gameObjects = gameObjects;
+		this.mapGrid = mapGrid;
 	}
 	
 	/**
@@ -22,21 +24,23 @@ public class GameEngine extends Thread
 	@Override
 	public synchronized void run()
 	{
-		while(!done) // outer game loop
-		{
-			try{Thread.sleep(30);}catch(Exception e){}
-			for(GameObject g:gameObjects)
+		synchronized(gameObjects) {
+			while(!done) // outer game loop
 			{
-				if(g.needsToBeRemoved) {
-					removeObject(g);
-				}					
-				double time = System.currentTimeMillis();
-				g.update(time);
+				try{Thread.sleep(30);}catch(Exception e){}
+				for(GameObject g:gameObjects)
+				{
+					if(g.needsToBeRemoved) {
+						removeObject(g);
+					}					
+					double time = System.currentTimeMillis();
+					g.update(time, mapGrid);
+				}
 			}
 		}
 	}
 	
-	public synchronized void removeObject(GameObject o) {
+	public void removeObject(GameObject o) {
 		gameObjects.remove(o);
 	}
 }

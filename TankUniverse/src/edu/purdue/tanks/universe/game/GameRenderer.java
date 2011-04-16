@@ -161,7 +161,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	}
 	
 	//Drawing the current frame.
-	public synchronized void onDrawFrame(GL10 gl) {
+	public void onDrawFrame(GL10 gl) {
 		// Clear color and depth buffers using clear-value set earlier
 	    gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 	     

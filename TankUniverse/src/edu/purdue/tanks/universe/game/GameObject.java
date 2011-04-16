@@ -53,7 +53,7 @@ public abstract class GameObject {
 	    texBuffer.position(0);
 	}
 	
-	public boolean isCollision(int tankx, int tanky) {
+	public boolean isCollision(int tankx, int tanky, char[][] mapGrid) {
 		return false;
 	}
 	
@@ -61,7 +61,7 @@ public abstract class GameObject {
 		
 	}
 	
-	public void update(double time) {
+	public void update(double time, char[][] mapGrid) {
 		
 	}
 }

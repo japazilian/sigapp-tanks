@@ -58,13 +58,13 @@ public class PlayerTank extends GameObject {
 	}
 
 	@Override
-	public boolean isCollision(int tankx, int tanky) {
-		return super.isCollision(tankx, tanky);
+	public boolean isCollision(int tankx, int tanky, char[][] mapGrid) {
+		return super.isCollision(tankx, tanky, mapGrid);
 	}
 
 	@Override
-	public void update(double time) {
-		super.update(time);
+	public void update(double time, char[][] mapGrid) {
+		super.update(time, mapGrid);
 		rotation = vr;
 		posx += (float)(time - prev_time)*(0.001)*vx; 
 		posy += (float)(time - prev_time)*(0.001)*vy;

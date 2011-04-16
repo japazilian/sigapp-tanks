@@ -385,7 +385,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
     	bullet_sound = new MediaPlayer();
     	bullet_sound = MediaPlayer.create(getBaseContext(), R.raw.barret);
     	
-    	gameEngine = new GameEngine(gameObjects);
+    	gameEngine = new GameEngine(gameObjects, mapGrid);
     	gameEngine.start();
 		
     	sendUpdatesThread = new Thread[clients.size()-1];

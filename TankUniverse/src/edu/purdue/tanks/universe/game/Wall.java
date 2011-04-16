@@ -49,15 +49,4 @@ public class Wall extends GameObject {
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
-
-	@Override
-	public boolean isCollision(int tankx, int tanky) {
-		return super.isCollision(tankx, tanky);
-	}
-
-	@Override
-	public void update(double time) {
-		super.update(time);
-	}
-
 }
