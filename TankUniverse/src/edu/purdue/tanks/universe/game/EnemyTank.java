@@ -11,10 +11,10 @@ public class EnemyTank extends GameObject {
 	
 	private FloatBuffer vertexBuffer;
 	private float[] vertices = {  // Vertices for the square
-		      -0.75f, -0.75f,  0.0f,  // 0. left-bottom
-		       0.75f, -0.75f,  0.0f,  // 1. right-bottom
-		      -0.75f,  0.75f,  0.0f,  // 2. left-top
-		       0.75f,  0.75f,  0.0f   // 3. right-top
+		      -0.5f, -0.5f,  0.0f,  // 0. left-bottom
+		       0.5f, -0.5f,  0.0f,  // 1. right-bottom
+		      -0.5f,  0.5f,  0.0f,  // 2. left-top
+		       0.5f,  0.5f,  0.0f   // 3. right-top
 	};
 	short inmotion = 0;
 	
