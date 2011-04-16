@@ -22,25 +22,27 @@ public class GameEngine extends Thread
 	 * The main game engine, updates the positions of all objects in GameObjects
 	 */
 	@Override
-	public synchronized void run()
+	public void run()
 	{
-		synchronized(gameObjects) {
-			while(!done) // outer game loop
-			{
-				try{Thread.sleep(30);}catch(Exception e){}
-				for(GameObject g:gameObjects)
-				{
-					if(g.needsToBeRemoved) {
-						removeObject(g);
-					}					
-					double time = System.currentTimeMillis();
-					g.update(time, mapGrid);
-				}
-			}
+		while(!done) // outer game loop
+		{
+			try{Thread.sleep(30);}catch(Exception e){}
+			updateAll();
 		}
 	}
 	
-	public void removeObject(GameObject o) {
-		gameObjects.remove(o);
+	public synchronized void updateAll() {
+		for(GameObject g:gameObjects)
+		{
+			if(g.needsToBeRemoved) {
+				removeObject(g);
+			}					
+			double time = System.currentTimeMillis();
+			g.update(time, mapGrid);
+		}
+	}
+	
+	public void removeObject(GameObject g) {
+		gameObjects.remove(g);
 	}
 }
