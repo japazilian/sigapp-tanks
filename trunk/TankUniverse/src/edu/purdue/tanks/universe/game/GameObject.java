@@ -43,6 +43,7 @@ public abstract class GameObject {
 		posx = 0.0f; 
 		posy = 0.0f; 
 		rotation = 0.0f;
+		prev_time = System.currentTimeMillis();
 		
 		ByteBuffer tbb = ByteBuffer.allocateDirect(texCoords.length * 4);
 	    tbb.order(ByteOrder.nativeOrder());

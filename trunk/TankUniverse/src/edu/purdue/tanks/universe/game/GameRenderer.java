@@ -218,13 +218,18 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    count = (count+1)%10;
 	   
 	   
-	    /* print all objects */
-	    for (GameObject g:gameObjects) {
-	    	g.draw(gl, imageResources, player.posx, player.posy);
-	    }
-	    //for (GameObject g:uiObjects) {
-	    //	g.draw(gl, imageResources, player.posx, player.posy);
-	    //}
+	    try {
+			/* print all objects */
+			for (GameObject g:gameObjects) {
+				g.draw(gl, imageResources, player.posx, player.posy);
+			}
+			//for (GameObject g:uiObjects) {
+			//	g.draw(gl, imageResources, player.posx, player.posy);
+			//}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    
 	}
 

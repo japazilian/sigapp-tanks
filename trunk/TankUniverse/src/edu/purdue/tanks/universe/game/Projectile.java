@@ -6,6 +6,8 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.util.Log;
+
 
 public class Projectile extends GameObject {
 	private FloatBuffer vertexBuffer;
@@ -16,7 +18,7 @@ public class Projectile extends GameObject {
 		       0.375f,  0.375f,  0.0f   // 3. right-top
 	};
 	public int idtype;
-	public float vel = 0.50f;
+	public float vel = 0.5f;
 	
 	public Projectile(int type) {
 		super(type);
@@ -68,12 +70,11 @@ public class Projectile extends GameObject {
 	public void update(double time, char[][] mapGrid) {
 		super.update(time, mapGrid);
 		//switch()
-		double deltatime = time - prev_time;
+		double deltatime = (time - prev_time);
 		posx += (float)((Math.cos(rotation + 90.0f) * Math.PI/180.0) * vel)*deltatime; // vel(h) * cos(theta) = vx(a)*time
 		posy += (float)((Math.sin(rotation + 90.0f) * Math.PI/180.0) * vel)*deltatime; // vel(h) * sin(theta) = vx(o)*time
 		prev_time = time;
-		
-		if(posx > 50 || posx < -50 || posy > 50 || posy < -50)
+		if(posx > 150 || posx < 0 || posy > 150 || posy < 0)
 			this.needsToBeRemoved = true;
 		
 		/*if(timer > 0 && timer < 100) {
