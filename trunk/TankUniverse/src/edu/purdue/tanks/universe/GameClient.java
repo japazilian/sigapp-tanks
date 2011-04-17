@@ -192,11 +192,11 @@ public class GameClient extends Activity implements OnTouchListener {
 	            			mBluetoothAdapter, mHandler);
 	            	mBTConnectThread.start();
 	            	while((mBTConnectedThread = mBTConnectThread.getConnectedThread()) == null) {
-	            		/*try {
-							wait(30);
+	            		try {
+							Thread.sleep(30);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
-						}*/
+						}
 	            	}
 	            }
 	            progressDialog.cancel();
@@ -282,6 +282,7 @@ public class GameClient extends Activity implements OnTouchListener {
 			mBTConnectedThread.write((LobbyConstants.clientDisconnect +
 						clientID).getBytes());
 			mBTConnectedThread.done = true;
+			mBTConnectedThread.cancel();
 		}
 		if (mode == Mode.Game) {
 			if (gameEngine != null)
@@ -392,7 +393,7 @@ public class GameClient extends Activity implements OnTouchListener {
 		    	}					
 			}
 		});
-		sendUpdatesThread.start();	
+		sendUpdatesThread.start();
 	}
 
 	public boolean onTouch(View v, MotionEvent ev) {

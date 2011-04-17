@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.util.Log;
 
 public class BTConnectThread extends Thread {
 	private final BluetoothSocket mmSocket;
@@ -42,9 +43,11 @@ public class BTConnectThread extends Thread {
             // Connect the device through the socket. This will block
             // until it succeeds or throws an exception
         	while(true) {
+        		Log.d("Tank", "attempting to connect");
         		mmSocket.connect();
         		if(mmSocket != null)
         			break;
+        		Log.d("Tank", "socket was null");
         	}
         } catch (IOException connectException) {
             // Unable to connect; close the socket and get out

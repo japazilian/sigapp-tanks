@@ -37,7 +37,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	private BluetoothAdapter mBluetoothAdapter;
 	private Context ctx;
 	private BTAcceptThread mBTAcceptThread;
-	private ArrayList<BTClient> clients;
+	private ArrayList<BTClient> clients = new ArrayList<BTClient>();
 	private enum Mode {Lobby, Game};
 	private Mode mode;
 	
@@ -86,19 +86,32 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		mode = Mode.Lobby;
 		setContentView(R.layout.lobby);
 		ctx = this.getApplicationContext();
-		initializeLobbyGUI();
 		initializeBluetooth();
+		initializeLobbyGUI();
 	}
 	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		Log.d("Tank", "TankHost - onResume");
+		super.onResume();
+		for(BTClient c : clients) {
+			if(c.id == 0)
+				return;
+		}
+		Log.d("Tank", "adding host");
+		clients.add(new BTClient(0, 
+				getIntent().getStringExtra("username"),
+				getIntent().getIntExtra("color", 0)));
+		updateUsersUI();
+	}
+
 	/**
 	 * Initialize all the gui elements in code to be controlled later
 	 */
 	private void initializeLobbyGUI() {
 		// Yea yea, it's not a gui element, sue me
-		clients = new ArrayList<BTClient>(); 
-		clients.add(new BTClient(0, 
-				getIntent().getStringExtra("username"), 
-				getIntent().getIntExtra("color", 0)));
+		//clients = new ArrayList<BTClient>(); 
 		
 		btn_start = (ImageButton)findViewById(R.id.ImageButton01);
 		btn_start.setOnClickListener(this);
@@ -269,10 +282,14 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 				continue;
 			c.mBTConnectedThread.write(LobbyConstants.hostDisconnect.getBytes());
 			c.mBTConnectedThread.done = true;
+			c.mBTConnectedThread.cancel();
 		}
 		if (mode == Mode.Lobby) {
-			if (mBTAcceptThread != null)
+			if (mBTAcceptThread != null) {
 				mBTAcceptThread.done = true;
+				mBTAcceptThread.cancel();
+			}
+			
 		}
 		if (mode == Mode.Game) {
 			if (gameEngine != null)
