@@ -9,5 +9,6 @@ public class LobbyConstants {
 	public final static String gameStart = "gameStart:";
 	public final static String playerLocations = "playerLocations:";
 	public final static String clientPosition = "clientPosition:";
+	public final static String addBullet = "addBullet";
 	
 }

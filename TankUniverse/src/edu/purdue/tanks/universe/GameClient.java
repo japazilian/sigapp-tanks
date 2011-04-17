@@ -387,7 +387,7 @@ public class GameClient extends Activity implements OnTouchListener {
 		    			Thread.sleep(20);
 		    			String update = LobbyConstants.clientPosition;
 						update = update + clientID + "," + player.posx + "," 
-		    					+ player.posy + "," + player.rotation;
+		    					+ player.posy + "," + player.rotation + ";";
 		    			mBTConnectedThread.write(update.getBytes());
 		    		} catch (Exception e) { }
 		    	}					
@@ -402,16 +402,7 @@ public class GameClient extends Activity implements OnTouchListener {
 			 player.vy = 0;
 			 player.inmotion = 0;
 			 if (Math.abs(aButtonX-ev.getX(0)) < 50 && Math.abs(aButtonY-ev.getY(0)) < 50) {
-				 if(System.currentTimeMillis() - lastBulletShot > .75*1000) {
-					 bullet_sound.seekTo(0);
-					 Projectile p = new Projectile(GameObject.TYPE_BULLET);
-					 p.posx = player.posx;
-					 p.posy = player.posy;
-					 p.rotation = player.rotation;
-					 addToGameObjects(p);
-					 bullet_sound.start();
-					 lastBulletShot = System.currentTimeMillis();
-				 }
+				 newBullet(player.posx, player.posy, player.rotation);
 			 }
 		 }
 		 else if (ev.getX(0) < width/2.0f && ev.getY(0) > height/2.0f) {
@@ -428,16 +419,7 @@ public class GameClient extends Activity implements OnTouchListener {
 		 }
 		 int n;
 		 if ((n = ev.getPointerCount()) != 1 && Math.abs(aButtonX-ev.getX(1)) < 30 && Math.abs(aButtonY-ev.getY(1)) < 30) {
-			 if(System.currentTimeMillis() - lastBulletShot > .75*1000) {			 
-				 bullet_sound.seekTo(0);
-				 Projectile p = new Projectile(GameObject.TYPE_BULLET);
-				 p.posx = player.posx;
-				 p.posy = player.posy;
-				 p.rotation = player.rotation;
-				 addToGameObjects(p);
-				 bullet_sound.start();
-				 lastBulletShot = System.currentTimeMillis();
-		 	}
+			 newBullet(player.posx, player.posy, player.rotation);
 		 }
 		 
 		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"vr="+vr +"\n"+n);
@@ -447,6 +429,25 @@ public class GameClient extends Activity implements OnTouchListener {
 	
 	private synchronized void addToGameObjects(GameObject o) {
 		gameObjects.add(o);		
+	}
+	
+	private void newBullet(float posx, float posy, float rotation) {
+		//add to local game objects
+		if(System.currentTimeMillis() - lastBulletShot > .75*1000) {			 
+			 bullet_sound.seekTo(0);
+			 Projectile p = new Projectile(GameObject.TYPE_BULLET);
+			 p.posx = player.posx;
+			 p.posy = player.posy;
+			 p.rotation = player.rotation;
+			 addToGameObjects(p);
+			 bullet_sound.start();
+			 lastBulletShot = System.currentTimeMillis();
+			//send to host
+			String update = LobbyConstants.addBullet+":";
+			update = update + clientID + "," + player.posx + "," 
+					+ player.posy + "," + player.rotation+";";
+			mBTConnectedThread.write(update.getBytes());
+	 	}
 	}
 	
 	/**
@@ -459,36 +460,49 @@ public class GameClient extends Activity implements OnTouchListener {
         	byte[] writeBuf = (byte[]) msg.obj;
             // construct a string from the buffer
             String message = new String(writeBuf).trim();
+        	String[] messages = message.split(";"); 
         	//Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show();
-        	
-        	if(message.startsWith(LobbyConstants.playerLocations)) {
-        		message = message.substring(message.lastIndexOf("p"));
-        		String[] realMessage = message.split(":");
-        		String[] allClients = realMessage[1].split(";");
-        		for(int i=0; i<allClients.length; i++) {
-        			String[] clientParts = allClients[i].split(",");
-        			int id = Integer.parseInt(clientParts[0]);
-        			if(id == clientID)
-        				continue;
-            		for(BTClient c : clients) {
-            			if(c.id == id) {
-            				try {
-								c.tank.posx = Float.parseFloat(clientParts[1]);
-								c.tank.posy = Float.parseFloat(clientParts[2]);
-								c.tank.rotation = Float.parseFloat(clientParts[3]);
-	            				break;
-							} catch (NumberFormatException e) {
-								e.printStackTrace();
-							}
-            			}
-            		}
-        			
-        		}
+        	for(int j=0; j<messages.length; j++) {
+        		message = messages[j];
+	        	if(message.startsWith(LobbyConstants.playerLocations)) {
+	        		message = message.substring(message.lastIndexOf("p"));
+	        		String[] realMessage = message.split(":");
+	        		String[] allClients = realMessage[1].split(";");
+	        		for(int i=0; i<allClients.length; i++) {
+	        			String[] clientParts = allClients[i].split(",");
+	        			int id = Integer.parseInt(clientParts[0]);
+	        			if(id == clientID)
+	        				continue;
+	            		for(BTClient c : clients) {
+	            			if(c.id == id) {
+	            				try {
+									c.tank.posx = Float.parseFloat(clientParts[1]);
+									c.tank.posy = Float.parseFloat(clientParts[2]);
+									c.tank.rotation = Float.parseFloat(clientParts[3]);
+		            				break;
+								} catch (NumberFormatException e) {
+									e.printStackTrace();
+								}
+	            			}
+	            		}
+	        			
+	        		}
+	        	}
+	        	else if(message.startsWith(LobbyConstants.hostDisconnect)) {
+	        		toastError("Host disconnected.");
+	        	}
+	        	else if(message.startsWith(LobbyConstants.addBullet)) {
+	        		String[] messageParts = message.split(":")[1].split(",");
+	        		int id = Integer.parseInt(messageParts[0]);			 
+					bullet_sound.seekTo(0);
+	        		Projectile p = new Projectile(GameObject.TYPE_BULLET);
+	        		p.posx = Float.parseFloat(messageParts[1]);
+	        		p.posy = Float.parseFloat(messageParts[2]);
+	        		p.rotation = Float.parseFloat(messageParts[3]);
+					addToGameObjects(p);
+					bullet_sound.start();
+	        	}
         	}
-        	else if(message.startsWith(LobbyConstants.hostDisconnect)) {
-        		toastError("Host disconnected.");
-        	}
-        		
             java.util.Arrays.fill((byte[]) msg.obj, (byte) 0); //flush buffer
         }
     };
