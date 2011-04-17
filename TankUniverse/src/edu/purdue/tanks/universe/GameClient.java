@@ -309,6 +309,7 @@ public class GameClient extends Activity implements OnTouchListener {
 	 */
 	
 	private boolean sendUpdatesDone = false;
+	private long lastBulletShot = 0;
 	
 	/**
 	 * Used to inialize elements that were originally done in the onCreate
@@ -400,13 +401,16 @@ public class GameClient extends Activity implements OnTouchListener {
 			 player.vy = 0;
 			 player.inmotion = 0;
 			 if (Math.abs(aButtonX-ev.getX(0)) < 50 && Math.abs(aButtonY-ev.getY(0)) < 50) {
-				 bullet_sound.seekTo(0);
-				 Projectile p = new Projectile(GameObject.TYPE_BULLET);
-				 p.posx = player.posx;
-				 p.posy = player.posy;
-				 p.rotation = player.rotation;
-				 addToGameObjects(p);
-				 bullet_sound.start();
+				 if(System.currentTimeMillis() - lastBulletShot > .75*1000) {
+					 bullet_sound.seekTo(0);
+					 Projectile p = new Projectile(GameObject.TYPE_BULLET);
+					 p.posx = player.posx;
+					 p.posy = player.posy;
+					 p.rotation = player.rotation;
+					 addToGameObjects(p);
+					 bullet_sound.start();
+					 lastBulletShot = System.currentTimeMillis();
+				 }
 			 }
 		 }
 		 else if (ev.getX(0) < width/2.0f && ev.getY(0) > height/2.0f) {
@@ -423,13 +427,16 @@ public class GameClient extends Activity implements OnTouchListener {
 		 }
 		 int n;
 		 if ((n = ev.getPointerCount()) != 1 && Math.abs(aButtonX-ev.getX(1)) < 30 && Math.abs(aButtonY-ev.getY(1)) < 30) {
-			 bullet_sound.seekTo(0);
-			 Projectile p = new Projectile(GameObject.TYPE_BULLET);
-			 p.posx = player.posx;
-			 p.posy = player.posy;
-			 p.rotation = player.rotation;
-			 addToGameObjects(p);
-			 bullet_sound.start();
+			 if(System.currentTimeMillis() - lastBulletShot > .75*1000) {			 
+				 bullet_sound.seekTo(0);
+				 Projectile p = new Projectile(GameObject.TYPE_BULLET);
+				 p.posx = player.posx;
+				 p.posy = player.posy;
+				 p.rotation = player.rotation;
+				 addToGameObjects(p);
+				 bullet_sound.start();
+				 lastBulletShot = System.currentTimeMillis();
+		 	}
 		 }
 		 
 		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"vr="+vr +"\n"+n);

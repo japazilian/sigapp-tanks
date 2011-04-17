@@ -63,7 +63,7 @@ public class MapLoader {
 				for (int i=0; i<col; i++)
 				{
 					char c = s.charAt(i);
-					Log.d("Tank", "reading row: "+j+" col: "+i+" char: "+c);
+					//Log.d("Tank", "reading row: "+j+" col: "+i+" char: "+c);
 					//System.out.println(c+c+c+c+c);
 					switch (c)
 					{
