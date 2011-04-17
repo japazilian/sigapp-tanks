@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.util.Log;
 
 public class BTAcceptThread extends Thread {
 	private BluetoothAdapter mBluetoothAdapter;
@@ -43,10 +44,13 @@ public class BTAcceptThread extends Thread {
         // Keep listening until exception occurs or a socket is returned
         while (!done) {
             try {
+            	Log.d("Tank", "waiting for connection");
                 socket = mmServerSocket.accept();
-            } catch (IOException e) {	}
+                Log.d("Tank", "socket accepted");
+            } catch (IOException e) {Log.d("Tank", "exception 1"+e.toString());	}
             // If a connection was accepted
             if (socket != null) {
+                Log.d("Tank", "socket was not null");
                 // Do work to manage the connection (in a separate thread)
                 //manageConnectedSocket(socket);
             	BTConnectedThread mCT = new BTConnectedThread(
@@ -62,6 +66,7 @@ public class BTAcceptThread extends Thread {
 					e.printStackTrace();
 				}*/
             }
+            Log.d("Tank", "socket was null");
         }
     }
 

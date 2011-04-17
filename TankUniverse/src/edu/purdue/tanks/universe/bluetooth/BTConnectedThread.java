@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.util.Log;
 
 public class BTConnectedThread extends Thread {
 	private final BluetoothSocket mmSocket;
@@ -84,6 +85,7 @@ public class BTConnectedThread extends Thread {
     public void write(byte[] bytes) {
         try {
             mmOutStream.write(bytes);
+            Log.d("Tank", "writing: "+new String(bytes));
         } catch (IOException e) { }
     }
 
