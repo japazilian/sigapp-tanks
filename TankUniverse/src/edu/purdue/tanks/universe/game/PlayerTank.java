@@ -6,12 +6,14 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.util.Log;
+
 public class PlayerTank extends GameObject {
 	private FloatBuffer vertexBuffer;
 	public float vr = 0;
 	public float vx = 0;
 	public float vy = 0;
-	public float speed = 5;
+	public float speed = 4;
 	private float[] vertices = {  // Vertices for the square
 		      -0.5f, -0.5f,  0.0f,  // 0. left-bottom
 		       0.5f, -0.5f,  0.0f,  // 1. right-bottom
@@ -58,36 +60,86 @@ public class PlayerTank extends GameObject {
 	}
 
 	@Override
-	public boolean isCollision(int tankx, int tanky, char[][] mapGrid) {
-		if (mapGrid[tankx][tanky]!='0') return true;
-		// take the grids
-		return false;
+	public boolean isCollision(float tankx, float tanky, char[][] mapGrid) {
+		float lx = tankx + .2f*(float)(Math.cos((vr + 135.0f)* Math.PI/180.0));
+		float ly = tanky + .2f*(float)(Math.sin((vr + 135.0f)* Math.PI/180.0));;
+		float rx = tankx + .2f*(float)(Math.cos((vr + 45.0f)* Math.PI/180.0));
+		float ry = tanky + .2f*(float)(Math.sin((vr + 45.0f)* Math.PI/180.0));;
+		int mapx = (int)Math.round(tankx);
+		int mapy = (int)Math.round(tanky);
+		int minx = Math.round(Math.min(lx, rx)); 
+		int miny = Math.round(Math.min(ly, ry));
+		int maxx = Math.round(Math.max(lx, rx));
+		int maxy = Math.round(Math.max(ly, ry));
+		//boolean collision = false;
+		
+		for (int i = minx; i<=maxx;i++) {
+			for (int j = miny; j<=maxy;j++) {
+				if (!(mapGrid[i][j] == '0'|| mapGrid[i][j] == '2' || mapGrid[i][j] == '4'))
+					return true;
+			}
+		}
+		
+		if (mapGrid[mapx][mapy]=='0') {  //normal
+			speed = 4;
+			return false;
+		}
+		else if (mapGrid[mapx][mapy]=='2') { //grass
+			speed = 3;
+			return false;
+		}
+		else if (mapGrid[mapx][mapy]=='4') { //magic ice that makes you faster. yeah!
+			speed = 5;
+			return false;
+		}
+		
+		return true;
 	}
 	
 	@Override
 	public void update(double time, char[][] mapGrid) {
 		super.update(time, mapGrid);
 		rotation = vr;
-		double tempx = posx + (float)(time - prev_time)*(0.001)*vx;
-		double tempy = posy + (float)(time - prev_time)*(0.001)*vy;
+		float tempx = posx + (float)(time - prev_time)*(0.001f)*vx;
+		float tempy = posy + (float)(time - prev_time)*(0.001f)*vy;
 		
-		if (tempx>=0 && tempy>=0 && tempx<95 && tempy<95)
+		//float y = tempy + .2f*(float)(Math.sin((vr + 90.0f)* Math.PI/180.0));//(Math.sin((player.rotation + 90.0f) * Math.PI/180.0));
+		/*float lx = tempx + .2f*(float)(Math.cos((vr + 135.0f)* Math.PI/180.0));
+		float ly = tempy + .2f*(float)(Math.sin((vr + 135.0f)* Math.PI/180.0));;
+		float rx = tempx + .2f*(float)(Math.cos((vr + 45.0f)* Math.PI/180.0));
+		float ry = tempy + .2f*(float)(Math.sin((vr + 45.0f)* Math.PI/180.0));;
+		*/
+		
+		if (tempx>=0 && tempy>=0 && tempx<=95 && tempy<=95) // in map check grids
 		{
-			if (!isCollision((int)Math.round(tempx), (int)Math.round(tempy) ,mapGrid) ) 
-			{
-				posx = (float) tempx; 
-				posy = (float) tempy;
+			if (isCollision(posx, posy ,mapGrid)) {
+				posx -= .2f*(float)(Math.cos((vr + 90.0f)* Math.PI/180.0));
+				posy -= .2f*(float)(Math.sin((vr + 90.0f)* Math.PI/180.0));;
 			}
+			else {
+				if (!isCollision(tempx, posy ,mapGrid))
+					posx = tempx; 
+				if (!isCollision(posx, tempy ,mapGrid)) 
+					posy = tempy; 
+			}
+			/*
+			if (!isCollision(lx, ly ,mapGrid) && !isCollision(rx, ry ,mapGrid)){
+				posx = tempx; 
+				posy = tempy;
+			}*/
+			//if (!isCollision(posx, tempy ,mapGrid) ) 
+			//	posy = tempy;
+			
 		}
-		else
-		{
-			if (tempx<0) posx = 0;
-			if (tempy<0) posy = 0;
-			if (tempx>95) posx = 95;
-			if (tempy>95) posy = 95;
+		else { // out of the map
+			if(tempx>=0 && tempx<=95)
+				posx = tempx;
+			else if (tempy>=0 && tempy<=95)
+				posy = tempy;
 		}
+		
 		prev_time = time;
-		//Log.d("tank", (time-prev_time) + "/" + vx + "/" + "/" + vy);
+		//Log.d("tank", "!!!!!!!!!!("+ tempx +","+tempy+")/("+ lx +"," + ly + ")/(" + rx+"," + ry + ")");
 	}
 
 }
