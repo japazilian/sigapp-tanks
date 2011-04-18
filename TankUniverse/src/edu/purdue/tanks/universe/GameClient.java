@@ -199,7 +199,6 @@ public class GameClient extends Activity implements OnTouchListener {
 						}
 	            	}
 	            }
-	            progressDialog.cancel();
 	        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
         		// This is called when discovery finished
 	        	if(!hostFound)
@@ -237,6 +236,7 @@ public class GameClient extends Activity implements OnTouchListener {
         					Integer.parseInt(clientParts[2])));
         		}
         		updateUsersUI();
+	            progressDialog.cancel();
         	}
         	else if(message.startsWith(LobbyConstants.hostDisconnect)) {
         		toastError("Host disconnected.");
