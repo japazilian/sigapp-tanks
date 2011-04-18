@@ -3,15 +3,13 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center"
-    android:padding="50dip"
-    >
+    android:gravity="center" android:padding="50dip">
     <EditText 
       android:layout_height="wrap_content" 
       android:id="@+id/edit_username"
       android:layout_width="match_parent" 
       android:hint="Username (letters and numbers only)"
-      android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789">
+      android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" android:background="@drawable/name" android:textColorHint="#C000" android:padding="15dip">
     </EditText>
     <Button 
       android:text="Pick Color" 
@@ -29,5 +27,5 @@
       android:layout_width="100dip" 
       android:layout_height="wrap_content" 
       android:text="Join"></Button>
-
+    
 </LinearLayout>
