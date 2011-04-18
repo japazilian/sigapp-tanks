@@ -12,13 +12,13 @@ import android.util.Log;
 public class Projectile extends GameObject {
 	private FloatBuffer vertexBuffer;
 	private float[] vertices = {  // Vertices for the square
-		      -0.375f, -0.375f,  0.0f,  // 0. left-bottom
-		       0.375f, -0.375f,  0.0f,  // 1. right-bottom
-		      -0.375f,  0.375f,  0.0f,  // 2. left-top
-		       0.375f,  0.375f,  0.0f   // 3. right-top
+		      -0.175f, -0.175f,  0.0f,  // 0. left-bottom
+		       0.175f, -0.175f,  0.0f,  // 1. right-bottom
+		      -0.175f,  0.175f,  0.0f,  // 2. left-top
+		       0.175f,  0.175f,  0.0f   // 3. right-top
 	};
 	public int idtype;
-	public float vel = 0.5f;
+	public float vel = 7.0f;
 	
 	public Projectile(int type) {
 		super(type);
@@ -50,10 +50,10 @@ public class Projectile extends GameObject {
 		gl.glRotatef(rotation, 0.0f, 0.0f, 1.0f);
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, imageResources[12]);
-		for (int i = 0; i < 5; i++) {
+		/*for (int i = 0; i < 5; i++) {
 			gl.glTranslatef(0, -0.5f, 0);
 			gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-		}
+		}*/
 		gl.glPopMatrix();
 	  
 		//gl.glDisable(GL10.GL_CULL_FACE);
@@ -70,9 +70,9 @@ public class Projectile extends GameObject {
 	public void update(double time, char[][] mapGrid) {
 		super.update(time, mapGrid);
 		//switch()
-		double deltatime = (time - prev_time);
-		posx += (float)((Math.cos(rotation + 90.0f) * Math.PI/180.0) * vel)*deltatime; // vel(h) * cos(theta) = vx(a)*time
-		posy += (float)((Math.sin(rotation + 90.0f) * Math.PI/180.0) * vel)*deltatime; // vel(h) * sin(theta) = vx(o)*time
+		double deltatime = (time - prev_time)/1000;
+		posx += (float)(Math.cos((rotation+90)* Math.PI/180.0) * vel)*deltatime; // vel(h) * cos(theta) = vx(a)*time
+		posy += (float)(Math.sin((rotation+90)* Math.PI/180.0) * vel)*deltatime; // vel(h) * sin(theta) = vx(o)*time
 		prev_time = time;
 		if(posx > 150 || posx < 0 || posy > 150 || posy < 0)
 			this.needsToBeRemoved = true;
