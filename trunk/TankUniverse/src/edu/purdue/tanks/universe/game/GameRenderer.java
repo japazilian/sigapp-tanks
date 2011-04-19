@@ -102,7 +102,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	
 	//Whenever the surface is created or re-created
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Set color's clear-value to black
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);  // Set color's clear-value to black
 	    gl.glClearDepthf(1.0f);            // Set depth's clear-value to farthest
 	    gl.glEnable(GL10.GL_DEPTH_TEST);   // Enables depth-buffer for hidden surface removal
 	    gl.glDepthFunc(GL10.GL_LEQUAL);    // The type of depth testing to do
@@ -186,7 +186,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    		if (i >= 0 && i<=95 && j >= 0 && j<=95) {
 	    			if (mapGrid[i][j] != '0') {
 	    				gl.glPushMatrix();
-	    				gl.glTranslatef((float)i-player.posx, (float)j-player.posy, 0);
+	    				gl.glTranslatef(i-player.posx, j-player.posy, 0);
 	    				//gl.glTranslatef(i, j, 0);
 	    				//System.out.println("YES YES YES YES!");
 	    				switch (mapGrid[i][j]) {

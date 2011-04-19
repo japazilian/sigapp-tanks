@@ -53,7 +53,7 @@ public class MapLoader {
 			row = Integer.parseInt(sizes[0]);
 			col = Integer.parseInt(sizes[1]);
 			map = new char[row][col];
-			String s = buf.readLine();
+			String s;// = buf.readLine();
 			String text = "row: " + row + " col: " + col;
 			for (int j=row-1;j>=0;j--)
 			{
