@@ -54,7 +54,7 @@ public abstract class GameObject {
 	    texBuffer.position(0);
 	}
 	
-	public boolean isCollision(int tankx, int tanky, char[][] mapGrid) {
+	public boolean isCollision(float tankx, float tanky, char[][] mapGrid) {
 		return false;
 	}
 	

@@ -54,6 +54,7 @@ public class Main extends Activity implements OnClickListener, ColorPickerDialog
 			i.putExtra("color", color);
 			startActivity(i);
 		}		
+		
 	}
 
 	public void colorChanged(int color) {

@@ -62,7 +62,7 @@ public class Projectile extends GameObject {
 	}
 
 	@Override
-	public boolean isCollision(int tankx, int tanky, char[][] mapGrid) {
+	public boolean isCollision(float tankx, float tanky, char[][] mapGrid) {
 		return super.isCollision(tankx, tanky, mapGrid);
 	}
 	
