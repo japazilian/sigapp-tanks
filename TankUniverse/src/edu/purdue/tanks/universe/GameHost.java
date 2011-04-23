@@ -156,7 +156,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	 * address which is required for making a connection
 	 */
 	private void startSearch() {
-		mBluetoothAdapter.setName("notTankHost");
+		mBluetoothAdapter.setName("TankHost");
 		Intent discoverableIntent = new
 		Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
 		discoverableIntent.putExtra(
