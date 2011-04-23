@@ -384,7 +384,7 @@ public class GameClient extends Activity implements OnTouchListener {
 			public void run() {
 				while(!sendUpdatesDone) {
 		    		try {
-		    			Thread.sleep(20);
+		    			Thread.sleep(50);
 		    			String update = LobbyConstants.clientPosition;
 						update = update + clientID + "," + player.posx + "," 
 		    					+ player.posy + "," + player.rotation + ";";
