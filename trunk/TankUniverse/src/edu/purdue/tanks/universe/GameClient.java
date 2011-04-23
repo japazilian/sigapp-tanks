@@ -424,6 +424,9 @@ public class GameClient extends Activity implements OnTouchListener {
 		 
 		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"vr="+vr +"\n"+n);
 		 
+		 aStick.posx = -0.00275f*width + player.inmotion*0.15f*(float)(Math.cos((player.rotation + 90.0f) * Math.PI/180.0));
+         aStick.posy = -0.00275f*height + player.inmotion*0.15f*(float)(Math.sin((player.rotation + 90.0f) * Math.PI/180.0));
+		 
 		 return true;
 	}
 	

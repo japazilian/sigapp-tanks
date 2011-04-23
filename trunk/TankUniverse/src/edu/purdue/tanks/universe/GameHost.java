@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.purdue.tanks.universe.bluetooth.BTAcceptThread;
@@ -43,7 +44,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	
 	// Lobby elements
 	private TextView[] tv_clients;
-	private ImageButton btn_start;
+	private ImageView btn_start;
 	
 		// Game elements
 		private GLSurfaceView mGLSurfaceView; //layout.game holds this
@@ -113,7 +114,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		// Yea yea, it's not a gui element, sue me
 		//clients = new ArrayList<BTClient>(); 
 		
-		btn_start = (ImageButton)findViewById(R.id.ImageButton01);
+		btn_start = (ImageView)findViewById(R.id.ImageButton01);
 		btn_start.setOnClickListener(this);
 		
 		tv_clients = new TextView[10];
@@ -156,7 +157,7 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 	 * address which is required for making a connection
 	 */
 	private void startSearch() {
-		mBluetoothAdapter.setName("TankHost");
+		mBluetoothAdapter.setName("NotTankHost");
 		Intent discoverableIntent = new
 		Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
 		discoverableIntent.putExtra(
@@ -462,6 +463,9 @@ public class GameHost extends Activity implements OnClickListener, OnTouchListen
 		 
 		 tv.setText(width+"x"+height+"\ninput:"+(int)ev.getRawX()+"/"+(int)ev.getRawY() + "\n"+"pos="+player.posx+"/"+ player.posy+"\n"+n
 				 +"\nmap"+mapGrid[(int)player.posx][(int)player.posy]);
+		 
+		 aStick.posx = -0.00275f*width + player.inmotion*0.15f*(float)(Math.cos((player.rotation + 90.0f) * Math.PI/180.0));
+         aStick.posy = -0.00275f*height + player.inmotion*0.15f*(float)(Math.sin((player.rotation + 90.0f) * Math.PI/180.0));
 		 
 		 return true;
 	}
