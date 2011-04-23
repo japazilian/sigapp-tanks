@@ -43,18 +43,19 @@ public class AnalogStick extends GameObject {
 		
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, imageResources[15]);
 	    gl.glPushMatrix();
-		gl.glTranslatef(-x, y, 17.0f);
+	    //gl.glTranslatef(0, 0, 1.0f);
+		gl.glTranslatef(-x, y, 10.0f);
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 		gl.glPopMatrix();
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, imageResources[14]);
 	    gl.glPushMatrix();
-		gl.glTranslatef(x, y, 16.999f);
+		gl.glTranslatef(x, y, 9.999f);
 		//gl.glRotatef(rotation, 0.0f, 0.0f, 1.0f);
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 		gl.glPopMatrix();
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, imageResources[13]);
 	    gl.glPushMatrix();
-		gl.glTranslatef(posx, posy, 17.0f);
+		gl.glTranslatef(posx, posy, 10.0f);
 		//gl.glRotatef(rotation, 0.0f, 0.0f, 1.0f);
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 		gl.glPopMatrix();
@@ -62,5 +63,6 @@ public class AnalogStick extends GameObject {
 		//gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
 }

@@ -223,6 +223,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 			for (GameObject g:gameObjects) {
 				g.draw(gl, imageResources, player.posx, player.posy);
 			}
+			aStick.draw(gl, imageResources, player.posx, player.posy);
 			//for (GameObject g:uiObjects) {
 			//	g.draw(gl, imageResources, player.posx, player.posy);
 			//}
