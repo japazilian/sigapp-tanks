@@ -57,6 +57,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	AnalogStick aStick;
 	PlayerTank eT;
 	
+	private float birdViewHeight = 13f; //camera (glulookat)
+	private float paletteWidth, paletteHeight; //size of the visible screen
+	
 	public GameRenderer (Context context, Vector<GameObject> gameObjects, char[][] mapGrid, PlayerTank player, AnalogStick aStick) {
 		this.context = context;
 		this.gameObjects = gameObjects;
@@ -158,6 +161,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	     this.width = width;
 	     this.height = height;
 	     this.aspect = aspect;
+	     
+	     paletteHeight = (float)Math.tan(Math.toRadians(22.5))*13f*2f;
+	     paletteWidth = paletteHeight*aspect;
 	}
 	
 	//Drawing the current frame.
@@ -171,51 +177,53 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	    
 	    /* view angle */
 	    //GLU.gluLookAt(gl, gameObjects.get(0).posx, gameObjects.get(0).posy, 20.0f, gameObjects.get(0).posx, gameObjects.get(0).posy, 0.0f, 0.0f, 1.0f, 0.0f);
-	    gl.glTranslatef(0.0f, 0.0f, -13.0f);
+	    gl.glTranslatef(0.0f, 0.0f, -birdViewHeight);
 	    
 	    /* print map */
 	    gl.glPushMatrix();
-	    gl.glTranslatef(47.5f-player.posx, 47.5f-player.posy, -0.1f);
-	    map.draw(gl);
+	    map.draw(gl, player.posx, player.posy, -paletteWidth/2f, -paletteHeight/2f, paletteWidth/2f, paletteHeight/2f);
 	    gl.glPopMatrix();
 	    
 	    gl.glPushMatrix();
-	    //gl.glTranslatef(-player.posx, -player.posy, 0.0f);
-	    for (int i = (int)(player.posx-10.0f);i<=(int)(player.posx+10.0f);i++) {
-	    	for(int j = (int)(player.posy-10.0f);j<=(int)(player.posy+10.0f);j++) {
-	    		if (i >= 0 && i<=95 && j >= 0 && j<=95) {
-	    			if (mapGrid[i][j] != '0') {
-	    				gl.glPushMatrix();
-	    				gl.glTranslatef(i-player.posx, j-player.posy, 0);
-	    				//gl.glTranslatef(i, j, 0);
-	    				//System.out.println("YES YES YES YES!");
-	    				switch (mapGrid[i][j]) {
-	    					case '1': steel.draw(gl);
-	    						break;
-	    					case '2': grass.draw(gl);
-	    						break;
-	    					case '3': if (count < 5)
-	    								water1.draw(gl);
-	    							else
-	    								water2.draw(gl);
-	    						break;
-	    					case '4': ice.draw(gl);
-	    						break;
-	    					case '5': brick.draw(gl);
-	    						break;
-	    					default : 
-	    						break;
-	    				}
-	    				gl.glPopMatrix();
+	    gl.glTranslatef(.5f, .5f, 0.0f);//
+	    int firstx = (int)Math.max(player.posx-Math.ceil(paletteWidth/2f), 0);
+	    int lastx = (int)Math.min(player.posx+Math.ceil(paletteWidth/2f), 95);
+	    int firsty = (int)Math.max(player.posy-Math.ceil(paletteHeight/2f), 0);
+	    int lasty = (int)Math.min(player.posy+Math.ceil(paletteHeight/2f), 95);
+	    gl.glTranslatef(firstx-player.posx, firsty-player.posy, 0);
+	    for (int i = firstx;i<=lastx;i++) {
+	    	gl.glPushMatrix();
+	    	for(int j = firsty;j<=lasty;j++) {
+	    		if (mapGrid[i][j] != '0') {
+	    			switch (mapGrid[i][j]) {
+	    				case '1': steel.draw(gl);
+	    					break;
+	    				case '2': grass.draw(gl);
+	    					break;
+	    				case '3': 	long currMiTime = System.currentTimeMillis()%500;
+	    					if (currMiTime < 250) {
+	    						water1.draw(gl);
+	    					}
+	    					else if (currMiTime < 500) {
+	    						gl.glRotatef(180, 0, 0, 1);
+	    						water1.draw(gl);
+	    						gl.glRotatef(-180, 0, 0, 1);
+	    					}
+	    					break;
+	    				case '4': ice.draw(gl);
+	    					break;
+	    				case '5': brick.draw(gl);
+	    					break;
+	    				default : 
+	    					break;
 	    			}
-	    			//System.out.println("NO NO NO NO NO!");
 	    		}
-	    		//gl.glTranslatef(0, 1.0f, 0);
+	    		gl.glTranslatef(0, 1, 0);
 	    	}
-	    	//gl.glTranslatef(1.0f, 0, 0);
+	    	gl.glPopMatrix();
+	    	gl.glTranslatef(1, 0, 0);
 	    }
 	    gl.glPopMatrix();	
-	    count = (count+1)%10;
 	   
 	   
 	    try {
