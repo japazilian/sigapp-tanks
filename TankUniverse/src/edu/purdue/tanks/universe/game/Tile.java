@@ -32,6 +32,14 @@ public class Tile {
 	   private int[] textureID = new int[1];
 	   private Bitmap bitmap;
 	   
+	   private float w,h;
+	   private float faceWidth;
+       private float faceHeight;
+	   private float faceLeft;
+	   private float faceRight;
+	   private float faceTop;
+	   private float faceBottom;
+	   
 	   // Constructor - Setup the vertex buffer
 	   public Tile(Context context, int id, float w, float h) {
 	      // Setup vertex array buffer. Vertices in float. A float has 4 bytes
@@ -41,23 +49,14 @@ public class Tile {
 	      
 	      imageFileID = id;
 	      bitmap = BitmapFactory.decodeStream(context.getResources().openRawResource(imageFileID));
-	      //bitmap 
-	      /*InputStream is= context.getResources().openRawResource(imageFileIDs);
-	      try {
-	          bitmap = BitmapFactory.decodeStream(is);
-
-	      } finally {
-	          //Always clear and close
-	          try {
-	              is.close();
-	              is = null;
-	          } catch (IOException e) {
-	          }
-	      }*/
+	      
 	         int imgWidth = bitmap.getWidth();
 	         int imgHeight = bitmap.getHeight();
-	         float faceWidth = w;
-	         float faceHeight = h;
+	         
+	         this.w = w;
+	         this.h = h;
+	         faceWidth = w;
+	         faceHeight = h;
 	         // Adjust for aspect ratio
 	         if (imgWidth > imgHeight) {
 	            faceHeight = faceHeight * imgHeight / imgWidth; 
@@ -65,13 +64,11 @@ public class Tile {
 	         else {
 	            faceWidth = faceWidth * imgWidth / imgHeight;
 	         }
-	         float faceLeft = -faceWidth / 2;
-	         float faceRight = -faceLeft;
-	         float faceTop = faceHeight / 2;
-	         float faceBottom = -faceTop;
-	         
-	        
-	         
+	         faceLeft = -faceWidth / 2;
+	         faceRight = -faceLeft;
+	         faceTop = faceHeight / 2;
+	         faceBottom = -faceTop;
+	          
 	         // Define the vertices for this face
 	         float[] vertices = {
 	            faceLeft,  faceBottom, 0.0f,  // 0. left-bottom-front
@@ -118,6 +115,60 @@ public class Tile {
 		      //gl.glDisable(GL10.GL_BLEND);
 		      gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		      gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+	   }
+	   
+public void draw(GL10 gl, float xc, float yc, float x0, float y0, float x1, float y1) {
+		   
+		   gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		   gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		   
+		   float tw = x1*2/w;
+		   float th = y1*2/h;
+		   float xl = Math.max(((xc)/w -tw/2f)*8f, 0);
+		   float xr = Math.min(((xc)/w +tw/2f)*8f, 8);
+		   float yb = Math.min((1f-(yc)/h +th/2f)*8f, 8);
+		   float yt = Math.max((1f-(yc)/h -th/2f)*8f, 0);
+		   
+		   if (xl == 0)
+			   x0 -= ((xc)/w -tw/2f)*w;
+		   else if (xr == 8)
+			   x1 -= ((xc)/w +tw/2f -1)*w;
+		   if (yb == 8)
+			   y0 += (1f-(yc)/h +th/2f -1)*h;
+		   else if (yt == 0)
+			   y1 += (1f-(yc)/h -th/2f)*h;   
+		   
+		   float[] vertices = {
+				   x0, y0, 0.0f,  // 0. left-bottom-front
+				   x1, y0, 0.0f,  // 1. right-bottom-front
+				   x0, y1,	0.0f,  // 2. left-top-front
+				   x1, y1, 0.0f,  // 3. right-top-front
+		   };
+
+		   float[] fvertices = {
+				   xl, yb, // 0. left-bottom-front
+				   xr, yb,  // 1. right-bottom-front
+				   xl, yt,  // 2. left-top-front
+				   xr, yt,  // 3. right-top-front
+		   };
+		   
+		   vertexBuffer.clear();
+		   vertexBuffer.put(vertices);
+		   vertexBuffer.position(0);
+		   texBuffer.clear();
+		   texBuffer.put(fvertices);
+		   texBuffer.position(0);
+		   gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+		   gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texBuffer);
+		      
+		   gl.glBindTexture(GL10.GL_TEXTURE_2D, textureID[0]);
+		      
+		   gl.glPushMatrix();
+		   	gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+		   gl.glPopMatrix();
+		   
+		   gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+		   gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	   }
 	   
 	   public void loadTexture(GL10 gl) {
