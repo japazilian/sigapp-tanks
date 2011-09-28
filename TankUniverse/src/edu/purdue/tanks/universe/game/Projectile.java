@@ -10,6 +10,11 @@ import android.util.Log;
 
 
 public class Projectile extends GameObject {
+	//variables for the collision detection
+	private float new_posx = 0;
+	private float new_posy = 0;
+	private float deltaTime = 0;
+	
 	private FloatBuffer vertexBuffer;
 	private float[] vertices = {  // Vertices for the square
 		      -0.175f, -0.175f,  0.0f,  // 0. left-bottom
@@ -63,28 +68,156 @@ public class Projectile extends GameObject {
 
 	@Override
 	public boolean isCollision(float tankx, float tanky, char[][] mapGrid) {
-		return super.isCollision(tankx, tanky, mapGrid);
+		//possibly requires different method of detection
+		//return super.isCollision(tankx, tanky, mapGrid);
+		boolean collision = false;
+		
+		float earliestEvent = deltaTime;
+		
+		float colx = 0;
+		float coly = 0;
+		
+		//check if it is hitting any environment 
+		//collision between the projectile and player
+		
+		//map
+		int firstXC = (int)(Math.min(posx, new_posx));//first mapGrid to search
+		int lastXC = (int)(Math.max(posx, new_posx));
+		int firstYC = (int)(Math.min(posy, new_posy));
+		int lastYC = (int)(Math.max(posy, new_posy));
+		
+		for (int i = firstXC; i <= lastXC; i++) {
+			for (int j = firstYC; j <= lastYC; j++) {
+				char temp = mapGrid[i][j];
+				if (!(temp == '0'|| temp == '2' || temp == '3' || temp == '4')) {
+					//Log.d("tank", "pro");
+					if (posx == new_posx) {
+						if (posy < new_posy) { //possible collision from bottom
+							float time = (float)(j-posy)/((new_posy-posy)/deltaTime);
+							float nx = posx;
+						
+							if (time <= earliestEvent) {
+								if (nx >= i && nx <= i+1)  {
+									earliestEvent = time;
+									colx = nx;
+									coly = j;
+									collision = true;
+								}
+							}
+						}
+						else if (posy > new_posy) { //possible collision from top
+							float time = (float)(j+1-posy)/((new_posy-posy)/deltaTime);
+							float nx = posx;
+						
+							if (time <= earliestEvent) {
+								if (nx >= i && nx <= i+1)  {
+									earliestEvent = time;
+									colx = nx;
+									coly = j+1;
+									collision = true;
+								}
+							}
+						}
+					}
+					else {
+						//Log.d("tank", "pro");
+						float slope = 0;
+						float y_int = 0;
+						if (posx < new_posx) {
+							slope = (new_posy-posy)/(new_posx-posx);
+							y_int = posy-slope*posx;
+						}
+						else if (posx > new_posx) {
+							slope = (posy-new_posy)/(posx-new_posx);
+							y_int = posy-slope*posx;
+						}
+						Log.d("tank", "slope:"+slope);
+						if (posx < new_posx) { //possible collision from left
+							float time = (float)(i-posx)/((new_posx-posx)/deltaTime);
+							float ny = i*slope+y_int;
+						
+							if (time <= earliestEvent) {
+								//Log.d("tank", "left");
+								if (ny >= j && ny <= j+1)  {
+									earliestEvent = time;
+									colx = i;
+									coly = ny;
+									collision = true;
+								}
+							}
+						}
+						else if (posx > new_posx) { //possible collision from right
+							float time = (float)(i+1-posx)/((new_posx-posx)/deltaTime);
+							float ny = (i+1)*slope+y_int;
+						
+							if (time <= earliestEvent) {
+								//Log.d("tank", "right");
+								if (ny >= j && ny <= j+1)  {
+									earliestEvent = time;
+									colx = i+1;
+									coly = ny;
+									collision = true;
+								}
+							}
+						}
+						if (posy < new_posy) { //possible collision from bottom
+							float time = (float)(j-posy)/((new_posy-posy)/deltaTime);
+							float nx = (j-y_int)/slope;
+						
+							if (time <= earliestEvent) {
+								//Log.d("tank", "bottom");
+								if (nx >= i && nx <= i+1)  {
+									earliestEvent = time;
+									colx = nx;
+									coly = j;
+									collision = true;
+								}
+							}
+						}
+						else if (posy > new_posy) { //possible collision from top
+							float time = (float)(j+1-posy)/((new_posy-posy)/deltaTime);
+							float nx = (j+1-y_int)/slope;
+						
+							if (time <= earliestEvent) {
+								//Log.d("tank", "top:"+nx+","+i+","+(i+1));
+								if (nx >= i && nx <= i+1)  {
+									earliestEvent = time;
+									colx = nx;
+									coly = j+1;
+									collision = true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		return collision;
 	}
 	
 	@Override
 	public void update(double time, char[][] mapGrid) {
 		super.update(time, mapGrid);
 		//switch()
-		double deltatime = (time - prev_time)/1000;
-		posx += (float)(Math.cos((rotation+90)* Math.PI/180.0) * vel)*deltatime; // vel(h) * cos(theta) = vx(a)*time
-		posy += (float)(Math.sin((rotation+90)* Math.PI/180.0) * vel)*deltatime; // vel(h) * sin(theta) = vx(o)*time
-		prev_time = time;
-		if(posx > 150 || posx < 0 || posy > 150 || posy < 0)
+		deltaTime = (float)((time - prev_time)/1000f);
+		new_posx = posx + (float)((Math.cos((rotation+90)* Math.PI/180.0) * vel)*deltaTime); // vel(h) * cos(theta) = vx(a)*time
+		new_posy = posy + (float)((Math.sin((rotation+90)* Math.PI/180.0) * vel)*deltaTime); // vel(h) * sin(theta) = vx(o)*time
+		
+		if(new_posx > 96 || new_posx < 0 || new_posy > 96 || new_posy < 0)
 			this.needsToBeRemoved = true;
-		
-		/*if(timer > 0 && timer < 100) {
-			posx += 0.5f*(float)(Math.cos((rotation + 90.0f) * Math.PI/180.0));;
-			posy += 0.5f*(float)(Math.sin((rotation + 90.0f) * Math.PI/180.0));;
-			timer++;
+		else {
+			if (isCollision(new_posx, new_posy, mapGrid)) {
+				this.needsToBeRemoved = true;
+			}
+			else {
+				posx = new_posx;
+				posy = new_posy;
+			}
 		}
-		else 
-			timer = 0;*/
-		
+	
+		prev_time = time;
 	}
 
 }

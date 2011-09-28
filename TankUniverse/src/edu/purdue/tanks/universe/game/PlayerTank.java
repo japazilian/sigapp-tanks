@@ -61,22 +61,24 @@ public class PlayerTank extends GameObject {
 
 	@Override
 	public boolean isCollision(float tankx, float tanky, char[][] mapGrid) {
-		float lx = tankx + .2f*(float)(Math.cos((vr + 135.0f)* Math.PI/180.0));
-		float ly = tanky + .2f*(float)(Math.sin((vr + 135.0f)* Math.PI/180.0));;
-		float rx = tankx + .2f*(float)(Math.cos((vr + 45.0f)* Math.PI/180.0));
-		float ry = tanky + .2f*(float)(Math.sin((vr + 45.0f)* Math.PI/180.0));;
-		int mapx = (int)Math.round(tankx);
-		int mapy = (int)Math.round(tanky);
-		int minx = Math.round(Math.min(lx, rx)); 
-		int miny = Math.round(Math.min(ly, ry));
-		int maxx = Math.round(Math.max(lx, rx));
-		int maxy = Math.round(Math.max(ly, ry));
-		//boolean collision = false;
+		int mapx = (int)Math.floor(tankx);//(int)Math.round(tankx);
+		int mapy = (int)Math.floor(tanky);;//(int)Math.round(tanky);
 		
-		for (int i = minx; i<=maxx;i++) {
-			for (int j = miny; j<=maxy;j++) {
-				if (!(mapGrid[i][j] == '0'|| mapGrid[i][j] == '2' || mapGrid[i][j] == '4'))
-					return true;
+		int temp = mapGrid[mapx][mapy];
+		if (!(temp == '0'|| temp == '2' || temp == '4'))
+			return true;
+		else {
+			for (int i = (int)Math.max(0, mapx-1); i <= (int)Math.min(95, mapx+1); i++) {
+				for (int j = (int)Math.max(0, mapy-1); j <= (int)Math.min(95, mapy+1); j++) {
+					temp = mapGrid[i][j];
+					if (!(temp == '0'|| temp == '2' || temp == '4')){
+						//Log.d("tank", tankx+","+tanky);
+						if ((tankx > i+.5f-.7f && tankx < i+.5f+.7f) && (tanky > j+.5f-.7f && tanky < j+.5f+.7f)) {
+							//Log.d("tank", "hmm");
+							return true;
+						}
+					}
+				}
 			}
 		}
 		
@@ -93,6 +95,7 @@ public class PlayerTank extends GameObject {
 			return false;
 		}
 		
+		Log.d("tank", "WARNING");
 		return true;
 	}
 	
@@ -100,26 +103,21 @@ public class PlayerTank extends GameObject {
 	public void update(double time, char[][] mapGrid) {
 		super.update(time, mapGrid);
 		rotation = vr;
-		float tempx = posx + (float)(time - prev_time)*(0.001f)*vx;
-		float tempy = posy + (float)(time - prev_time)*(0.001f)*vy;
+		float deltatime = (float)((time - prev_time)/1000f);
 		
-		//float y = tempy + .2f*(float)(Math.sin((vr + 90.0f)* Math.PI/180.0));//(Math.sin((player.rotation + 90.0f) * Math.PI/180.0));
-		/*float lx = tempx + .2f*(float)(Math.cos((vr + 135.0f)* Math.PI/180.0));
-		float ly = tempy + .2f*(float)(Math.sin((vr + 135.0f)* Math.PI/180.0));;
-		float rx = tempx + .2f*(float)(Math.cos((vr + 45.0f)* Math.PI/180.0));
-		float ry = tempy + .2f*(float)(Math.sin((vr + 45.0f)* Math.PI/180.0));;
-		*/
+		float tempx = posx + deltatime*vx;
+		float tempy = posy + deltatime*vy;
 		
-		if (tempx>0 && tempy>0 && tempx<95 && tempy<95) // in map check grids
+		if (tempx>0.5f && tempy>0.5f && tempx<95.5f && tempy<95.5f) // in map check grids
 		{
-			if (isCollision(posx, posy ,mapGrid)) { //push back when tank is in an illegal position
+			if (isCollision(posx, posy , mapGrid)) { //push back when tank is in an illegal position
 				posx -= .06f*(float)(Math.cos((vr + 90.0f)* Math.PI/180.0));
 				posy -= .06f*(float)(Math.sin((vr + 90.0f)* Math.PI/180.0));;
 			}
 			else {
-				if (!isCollision(tempx, posy ,mapGrid))
+				if (!isCollision(tempx, posy , mapGrid))
 					posx = tempx; 
-				if (!isCollision(posx, tempy ,mapGrid)) 
+				if (!isCollision(posx, tempy , mapGrid)) 
 					posy = tempy; 
 			}
 			/*
@@ -131,9 +129,9 @@ public class PlayerTank extends GameObject {
 			//	posy = tempy;
 			
 		}
-		else if (tempx>0 && tempx<95)
+		else if (tempx>0.5f && tempx<95.5f)
 		{
-			if (isCollision(posx, posy ,mapGrid)) { //push back when tank is in an illegal position
+			if (isCollision(posx, posy , mapGrid)) { //push back when tank is in an illegal position
 				posx -= .06f*(float)(Math.cos((vr + 90.0f)* Math.PI/180.0));
 				posy -= .06f*(float)(Math.sin((vr + 90.0f)* Math.PI/180.0));;
 			}
@@ -142,14 +140,14 @@ public class PlayerTank extends GameObject {
 					posx = tempx;  
 			}
 		}
-		else if (tempy>0 && tempy<95)
+		else if (tempy>0.5f && tempy<95.5f)
 		{
-			if (isCollision(posx, posy ,mapGrid)) { //push back when tank is in an illegal position
+			if (isCollision(posx, posy , mapGrid)) { //push back when tank is in an illegal position
 				posx -= .06f*(float)(Math.cos((vr + 90.0f)* Math.PI/180.0));
 				posy -= .06f*(float)(Math.sin((vr + 90.0f)* Math.PI/180.0));;
 			}
 			else {
-				if (!isCollision(posx, tempy ,mapGrid)) 
+				if (!isCollision(posx, tempy , mapGrid)) 
 					posy = tempy;   
 			}
 		}
@@ -161,7 +159,6 @@ public class PlayerTank extends GameObject {
 		}
 		
 		prev_time = time;
-		//Log.d("tank", "!!!!!!!!!!("+ tempx +","+tempy+")/("+ lx +"," + ly + ")/(" + rx+"," + ry + ")");
 	}
 
 }
