@@ -44,6 +44,7 @@ public class Game {
 		playerWhoGotHit.decreasePlayerHealth();
 		playerWhoShot.increasePoints(HIT_POINTS);
 		if(!playerWhoGotHit.isplayerAlive){
+			currentRound.alivePlayers.remove(playerIdHit);
 			playerWhoShot.addKill();
 			playerWhoShot.increasePoints(KILL_POINTS);
 		}
@@ -52,7 +53,7 @@ public class Game {
 	public void playerKilled(int playerId){
 		PlayerStats playerKilled = currentRound.pStats.get(playerId);
 		playerKilled.isplayerAlive = false;
-		
+		currentRound.alivePlayers.remove(playerId);
 	}
 	
 	
